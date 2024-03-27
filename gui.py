@@ -31,9 +31,13 @@ class GUI:
         self.air_fig, self.air_axs = plt.subplots(3, 2, figsize=(10, 10))
         self.air_canvas = FigureCanvasTkAgg(self.air_fig, master=self.air_tab)
 
+
+        self.toottip = ttk.Label(self.download_tab, text="Enter IP Address of the computer to download the data to")
+        self.toottip.pack()
+        self.ip_entry = tk.Entry(self.download_tab)
+        self.ip_entry.pack()
         self.button = tk.Button(self.download_tab, text="Download Trends as CSV", command=self.fileDownload)
         self.button.pack()
-        self.button.place(relx=0.4, rely=0.4, relheight=0.1, relwidth=0.3)
 
 
     def fileDownload(self):
