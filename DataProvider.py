@@ -16,6 +16,7 @@ class DataProvider: #TODO: remove the 0s
     _current = 0
     _power = 0
     _measurementsTime = []
+    _motorTemperatureTrend = []
 
 
     # def __init__(
@@ -31,7 +32,7 @@ class DataProvider: #TODO: remove the 0s
     #     self.tempHumSensor = I2C(busNumber=tempHumBus, deviceAddress=tempHumDevice)
     #     self.thermo1 = SPI(bus=thermo1Bus, device=thermo1Device)
     #     self.thermo2 = SPI(bus=thermo2Bus, device=thermo2Device)
-    #     self.thermo3 = SPI(bus=thermo3Bus, device=thermo3Device)
+    #     self.motorThermo = SPI(bus=thermo3Bus, device=thermo3Device)
 
     def updateData(self):
         # If the length of any array is equal to the number of minutes in a day, erase the oldest entry to be replaced
@@ -48,6 +49,7 @@ class DataProvider: #TODO: remove the 0s
             self._phaseVoltageTrend[2].pop(0)
             self._phaseCurrentTrend[2].pop(0)
             self._measurementsTime.pop(0)
+            self._motorTemperatureTrend.pop(0)
 
 
         # Time Section #
@@ -88,6 +90,10 @@ class DataProvider: #TODO: remove the 0s
         self._phaseVoltageTrend[2].append(currentPhaseVoltage3)
         self._phaseCurrentTrend[2].append(currentPhaseCurrent3)
 
+        #self.motorThermo.readData() TODO: make this work
+        currentMotorTemperature = self._motorTemperatureTrend[-1] + 4 if len(self._motorTemperatureTrend) != 0 else 0 #FIXME: this is not real data
+        self._motorTemperatureTrend.append(currentMotorTemperature)
+
         # Oil Section #
         # currentFirstOilTemperature = self.thermo1.readData() TODO: make this work
         currentFirstOilTemperature = self._firstOilTemperatureTrend[-1] + 2 if len(self._firstOilTemperatureTrend) != 0 else 0 #FIXME: this is not real data
@@ -99,7 +105,7 @@ class DataProvider: #TODO: remove the 0s
 
     def updateDataCSV(self):
         self.updateData()
-        csvHeaders = ["Time", "Air Pressure", "Air Humidity", "Air Temperature", "First Oil Temperature", "Second Oil Temperature", "Phase 1 Voltage", "Phase 1 Current", "Phase 2 Voltage", "Phase 2 Current", "Phase 3 Voltage", "Phase 3 Current"]
+        csvHeaders = ["Time", "Air Pressure", "Air Humidity", "Air Temperature", "First Oil Temperature", "Second Oil Temperature", "Phase 1 Voltage", "Phase 1 Current", "Phase 2 Voltage", "Phase 2 Current", "Phase 3 Voltage", "Phase 3 Current", "Motor Temperature"]
         # Open the CSV file in append mode
         with open('data.csv', 'w', newline='') as file:
             writer = csv.writer(file)
@@ -117,7 +123,8 @@ class DataProvider: #TODO: remove the 0s
                     self._phaseVoltageTrend[1][i],
                     self._phaseCurrentTrend[1][i],
                     self._phaseVoltageTrend[2][i],
-                    self._phaseCurrentTrend[2][i]
+                    self._phaseCurrentTrend[2][i],
+                    self._motorTemperatureTrend[i]
                 ]
                 # Write the data to the CSV file
                 writer.writerow(data)
@@ -152,6 +159,9 @@ class DataProvider: #TODO: remove the 0s
     
     def getPhaseTrends(self):
         return self._phaseVoltageTrend, self._phaseCurrentTrend
+    
+    def getMotorTemperatureTrend(self):
+        return self._motorTemperatureTrend
     
     def getTimeArray(self):
         return self._measurementsTime

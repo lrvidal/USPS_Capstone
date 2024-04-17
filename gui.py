@@ -175,6 +175,7 @@ class GUI:
 
     def updateElectricalAttributes(self):
         voltage, current, power = dataProvider.getElectricalAttributes()
+        motorTemperatureTrend = dataProvider.getMotorTemperatureTrend()
 
         self.electrical_axs[0, 0].cla()
         self.electrical_axs[0, 0].set_title("Current Voltage")
@@ -194,19 +195,23 @@ class GUI:
         self.electrical_axs[1, 0].set_yticks([])
         self.electrical_axs[1, 0].text(0.5, 0.5, str(power) + " kW", fontsize=35, ha='center')
 
+        self.electrical_axs[1, 1].cla()
+        self.electrical_axs[1, 1].set_title("Motor Temperature Trend")
+        self.electrical_axs[1, 1].plot(dataProvider.getTimeArray(), motorTemperatureTrend)
+
         self.electrical_canvas.draw()
 
     def updatePhaseTrends(self):
-        self.electrical_axs[1, 1].cla()
+        self.electrical_axs[2, 1].cla()
         self.electrical_axs[2, 0].cla()
         phaseVoltage, phaseCurrent = dataProvider.getPhaseTrends()
 
         for i in range(3):
-            self.electrical_axs[1, 1].plot(dataProvider.getTimeArray(), phaseVoltage[i], label=f"Phase {i+1}")
+            self.electrical_axs[2, 1].plot(dataProvider.getTimeArray(), phaseVoltage[i], label=f"Phase {i+1}")
             self.electrical_axs[2, 0].plot(dataProvider.getTimeArray(), phaseCurrent[i], label=f"Phase {i+1}")
 
-        self.electrical_axs[1, 1].set_title("Phase Voltage")
-        self.electrical_axs[1, 1].legend()
+        self.electrical_axs[2, 1].set_title("Phase Voltage")
+        self.electrical_axs[2, 1].legend()
 
         self.electrical_axs[2, 0].set_title("Phase Current")
         self.electrical_axs[2, 0].legend()
