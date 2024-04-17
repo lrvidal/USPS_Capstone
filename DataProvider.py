@@ -19,7 +19,7 @@ class DataProvider: #TODO: remove the 0s
     _motorTemperatureTrend = []
 
 
-    # def __init__(
+    # def __init__( TODO: this stuff is not properly set up
     #         self, rogowskyPort, rogowskyAdress, loopBus, loopDevice, 
     #         tempHumBus, tempHumDevice, 
     #         thermo1Bus, thermo1Device,

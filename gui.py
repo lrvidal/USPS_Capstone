@@ -41,22 +41,25 @@ class GUI:
 
 
     def fileDownload(self): #TODO: this needs testing
-        # ip = self.ip_entry.get()
-        # # Create a socket
-        # s = socket.socket()
+        ip = self.ip_entry.get()
+        PORT_NUMBER = 5000
+        try:
+            # Create a socket
+            s = socket.socket()
 
-        # # Connect to the receiver
-        # s.connect((ip, 50000))  # Replace 1234 with the port you want to use
+            # Connect to the receiver
+            s.connect((ip, PORT_NUMBER))
 
-        # # Open the file in binary mode
-        # with open("data.csv", "rb") as f:
-        #     # Read the file and send it over the socket
-        #     while (data := f.read(1024)):
-        #         s.send(data)
+            # Open the file in binary mode
+            with open("data.csv", "rb") as f:
+                # Read the file and send it over the socket
+                while (data := f.read(1024)):
+                    s.send(data)
 
-        # # Close the socket
-        # s.close()
-        pass
+            # Close the socket
+            s.close()
+        except Exception as e:
+            print("Connection Failed: ", e)
 
     def displayData(self):
 
