@@ -133,7 +133,7 @@ class GUI:
 
     def updateAirHumidityTrend(self):
         self.air_axs[1, 1].cla()
-        self.air_axs[1, 1].plot(dataProvider.getAirHumidityTrend())
+        self.air_axs[1, 1].plot(dataProvider.getTimeArray(), dataProvider.getAirHumidityTrend())
         self.air_axs[1, 1].set_title("Air Humidity Trend")
         self.air_canvas.draw()
 
@@ -147,7 +147,7 @@ class GUI:
 
     def updateAirPressureTrend(self):
         self.air_axs[0, 1].cla()
-        self.air_axs[0, 1].plot(dataProvider.getAirPressureTrend())
+        self.air_axs[0, 1].plot(dataProvider.getTimeArray(), dataProvider.getAirPressureTrend())
         self.air_axs[0, 1].set_title("Air Pressure Trend")
         self.air_canvas.draw()
 
@@ -161,7 +161,7 @@ class GUI:
     
     def updateAirTemperatureTrend(self):
         self.air_axs[2, 1].cla()
-        self.air_axs[2, 1].plot(dataProvider.getAirTemperatureTrend())
+        self.air_axs[2, 1].plot(dataProvider.getTimeArray(), dataProvider.getAirTemperatureTrend())
         self.air_axs[2, 1].set_title("Air Temperature Trend")
         self.air_canvas.draw()
 
@@ -202,8 +202,8 @@ class GUI:
         phaseVoltage, phaseCurrent = dataProvider.getPhaseTrends()
 
         for i in range(3):
-            self.electrical_axs[1, 1].plot(phaseVoltage[i], label=f"Phase {i+1}")
-            self.electrical_axs[2, 0].plot(phaseCurrent[i], label=f"Phase {i+1}")
+            self.electrical_axs[1, 1].plot(dataProvider.getTimeArray(), phaseVoltage[i], label=f"Phase {i+1}")
+            self.electrical_axs[2, 0].plot(dataProvider.getTimeArray(), phaseCurrent[i], label=f"Phase {i+1}")
 
         self.electrical_axs[1, 1].set_title("Phase Voltage")
         self.electrical_axs[1, 1].legend()
@@ -216,8 +216,8 @@ class GUI:
         self.oil_axs[1, 0].cla()
         firstTempTrend, secondTempTrend = dataProvider.getOilTemperaturesTrends()
         self.oil_axs[1, 0].set_title("Oil Temperature Trend")
-        self.oil_axs[1, 0].plot(firstTempTrend, label="First Oil Temperature")
-        self.oil_axs[1, 0].plot(secondTempTrend, label="Second Oil Temperature")
+        self.oil_axs[1, 0].plot(dataProvider.getTimeArray(), firstTempTrend, label="First Oil Temperature")
+        self.oil_axs[1, 0].plot(dataProvider.getTimeArray(), secondTempTrend, label="Second Oil Temperature")
         self.oil_axs[1, 0].legend()
 
         self.oil_axs[0, 0].cla()

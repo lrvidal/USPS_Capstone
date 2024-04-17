@@ -8,8 +8,8 @@ class DataProvider: #TODO: remove the 0s
     _airPressureTrend = []
     _airHumidityTrend = []
     _airTemperatureTrend = []
-    _phaseVoltageTrend = [[0], [0], [0]]
-    _phaseCurrentTrend = [[0], [0], [0]]
+    _phaseVoltageTrend = [[], [], []]
+    _phaseCurrentTrend = [[], [], []]
     _firstOilTemperatureTrend = []
     _secondOilTemperatureTrend = []
     _voltage = 0
@@ -69,7 +69,24 @@ class DataProvider: #TODO: remove the 0s
         self._airTemperatureTrend.append(currentTemperature)
 
         # Electrical Section #
-        #TBD
+        #TODO: implement SPI interfacing to acquire data
+        self._voltage += 1
+        self._current += 0.2
+        self._power += 10
+
+        currentPhaseVoltage1 = self._phaseVoltageTrend[0][-1] + 1 if len(self._phaseVoltageTrend[0]) != 0 else 0
+        currentPhaseCurrent1 = self._phaseCurrentTrend[0][-1] + 1 if len(self._phaseCurrentTrend[0]) != 0 else 0
+        currentPhaseVoltage2 = self._phaseVoltageTrend[1][-1] + 2 if len(self._phaseVoltageTrend[1]) != 0 else 0
+        currentPhaseCurrent2 = self._phaseCurrentTrend[1][-1] + 2 if len(self._phaseCurrentTrend[1]) != 0 else 0
+        currentPhaseVoltage3 = self._phaseVoltageTrend[2][-1] + 3 if len(self._phaseVoltageTrend[2]) != 0 else 0
+        currentPhaseCurrent3 = self._phaseCurrentTrend[2][-1] + 3 if len(self._phaseCurrentTrend[2]) != 0 else 0
+
+        self._phaseVoltageTrend[0].append(currentPhaseVoltage1)
+        self._phaseCurrentTrend[0].append(currentPhaseCurrent1)
+        self._phaseVoltageTrend[1].append(currentPhaseVoltage2)
+        self._phaseCurrentTrend[1].append(currentPhaseCurrent2)
+        self._phaseVoltageTrend[2].append(currentPhaseVoltage3)
+        self._phaseCurrentTrend[2].append(currentPhaseCurrent3)
 
         # Oil Section #
         # currentFirstOilTemperature = self.thermo1.readData() TODO: make this work
@@ -131,26 +148,10 @@ class DataProvider: #TODO: remove the 0s
         return self._airTemperatureTrend
     
     def getElectricalAttributes(self):
-        #TODO: implement SPI interfacing to acquire data
-        self._voltage += 1
-        self._current += 0.2
-        self._power += 10
-
-        currentPhaseVoltage1 = self._phaseVoltageTrend[0][-1] + 1
-        currentPhaseCurrent1 = self._phaseCurrentTrend[0][-1] + 1
-        currentPhaseVoltage2 = self._phaseVoltageTrend[1][-1] + 2
-        currentPhaseCurrent2 = self._phaseCurrentTrend[1][-1] + 2
-        currentPhaseVoltage3 = self._phaseVoltageTrend[2][-1] + 3
-        currentPhaseCurrent3 = self._phaseCurrentTrend[2][-1] + 3
-
-        self._phaseVoltageTrend[0].append(currentPhaseVoltage1)
-        self._phaseCurrentTrend[0].append(currentPhaseCurrent1)
-        self._phaseVoltageTrend[1].append(currentPhaseVoltage2)
-        self._phaseCurrentTrend[1].append(currentPhaseCurrent2)
-        self._phaseVoltageTrend[2].append(currentPhaseVoltage3)
-        self._phaseCurrentTrend[2].append(currentPhaseCurrent3)
-
         return self._voltage, self._current, self._power
     
     def getPhaseTrends(self):
         return self._phaseVoltageTrend, self._phaseCurrentTrend
+    
+    def getTimeArray(self):
+        return self._measurementsTime
