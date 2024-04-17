@@ -6,7 +6,7 @@ class ModBus:
         self.instrument.serial.baudrate = 9600
         self.instrument.serial.timeout = 0.1
 
-    def read_data(self, register_address):
+    def readData(self, register_address):
         try:
             data = self.instrument.read_register(register_address, functioncode=3)
             return data

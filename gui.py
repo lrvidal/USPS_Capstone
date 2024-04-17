@@ -1,12 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
 import matplotlib.pyplot as plt
 from DataProvider import DataProvider
+import socket
 
 dataProvider = DataProvider()
-
+UPDATE_DATA_TIME = 60000 # Time for updating data in milliseconds
 class GUI:
     def __init__(self, window, notebook):
         self.window = window
@@ -25,7 +25,7 @@ class GUI:
         self.electrical_fig, self.electrical_axs = plt.subplots(3, 2, figsize=(10, 10))
         self.electrical_canvas = FigureCanvasTkAgg(self.electrical_fig, master=self.electrical_tab)
 
-        self.oil_fig, self.oil_axs = plt.subplots(1, 2, figsize=(10, 5))
+        self.oil_fig, self.oil_axs = plt.subplots(2, 2, figsize=(10, 10))
         self.oil_canvas = FigureCanvasTkAgg(self.oil_fig, master=self.oil_tab)
 
         self.air_fig, self.air_axs = plt.subplots(3, 2, figsize=(10, 10))
@@ -40,14 +40,25 @@ class GUI:
         self.button.pack()
 
 
-    def fileDownload(self):
-        return
+    def fileDownload(self): #TODO: this needs testing
+        # ip = self.ip_entry.get()
+        # # Create a socket
+        # s = socket.socket()
+
+        # # Connect to the receiver
+        # s.connect((ip, 50000))  # Replace 1234 with the port you want to use
+
+        # # Open the file in binary mode
+        # with open("data.csv", "rb") as f:
+        #     # Read the file and send it over the socket
+        #     while (data := f.read(1024)):
+        #         s.send(data)
+
+        # # Close the socket
+        # s.close()
+        pass
 
     def displayData(self):
-        # TODO: Replace this with your own data retrieval logic
-
-        lossOfPressure = [0.5, 0.3, 0.2, 0.4, 0.1]
-        oilSystemConditions = ["Normal", "Normal", "Abnormal", "Normal", "Abnormal"]
 
         # Add the tabs to the notebook
         self.notebook.add(self.electrical_tab, text="Electrical")
@@ -63,13 +74,8 @@ class GUI:
         self.electrical_canvas.draw()
         self.electrical_canvas.get_tk_widget().pack()
 
-        # Plot loss of pressure over time in the oil tab
-        self.oil_axs[0].plot(lossOfPressure)
-        self.oil_axs[0].set_title("Loss of Pressure")
-
-        # Plot oil system conditions in the oil tab
-        self.oil_axs[1].plot(oilSystemConditions)
-        self.oil_axs[1].set_title("Oil System Conditions")
+        # Plot oil temperature trends in the oil tab
+        self.updateOilTemperatures()
 
         # Adjust spacing between subplots in the oil tab
         self.oil_fig.tight_layout()
@@ -107,20 +113,23 @@ class GUI:
         self.notebook.pack()
         # Run the GUI event loop
 
-        self.window.after(3000, self.updateData) #FIXME: time interval for updating data is hardcoded
+        self.window.after(UPDATE_DATA_TIME, self.updateData)
         self.window.mainloop()
 
     def updateData(self):
+        dataProvider.updateDataCSV()
+
         self.updateCurrentAirPressure()
         self.updateAirPressureTrend()
         self.updateCurrentAirHumidity()
         self.updateAirHumidityTrend()
         self.updateCurrentAirTemperature()
         self.updateAirTemperatureTrend()
+        self.updateOilTemperatures()
         self.updateElectricalAttributes()
         self.updatePhaseTrends()
 
-        self.window.after(3000, self.updateData) #FIXME: time interval for updating data is hardcoded
+        self.window.after(UPDATE_DATA_TIME, self.updateData)
 
     def updateAirHumidityTrend(self):
         self.air_axs[1, 1].cla()
@@ -201,9 +210,33 @@ class GUI:
 
         self.electrical_axs[2, 0].set_title("Phase Current")
         self.electrical_axs[2, 0].legend()
+        self.electrical_canvas.draw()
+
+    def updateOilTemperatures(self):
+        self.oil_axs[1, 0].cla()
+        firstTempTrend, secondTempTrend = dataProvider.getOilTemperaturesTrends()
+        self.oil_axs[1, 0].set_title("Oil Temperature Trend")
+        self.oil_axs[1, 0].plot(firstTempTrend, label="First Oil Temperature")
+        self.oil_axs[1, 0].plot(secondTempTrend, label="Second Oil Temperature")
+        self.oil_axs[1, 0].legend()
+
+        self.oil_axs[0, 0].cla()
+        self.oil_axs[0, 0].set_title("Current First Oil Temperature")
+        self.oil_axs[0, 0].set_xticks([])
+        self.oil_axs[0, 0].set_yticks([])
+        self.oil_axs[0, 0].text(0.5, 0.5, str(firstTempTrend[-1]) + " °F", fontsize=35, ha='center')
+
+        self.oil_axs[0, 1].cla()
+        self.oil_axs[0, 1].set_title("Current Second Oil Temperature")
+        self.oil_axs[0, 1].set_xticks([])
+        self.oil_axs[0, 1].set_yticks([])
+        self.oil_axs[0, 1].text(0.5, 0.5, str(secondTempTrend[-1]) + " °F", fontsize=35, ha='center')
+        self.oil_canvas.draw()
+
 
 window = tk.Tk()
 notebook = ttk.Notebook(window)
 gui = GUI(window=window, notebook=notebook)
 
+dataProvider.updateDataCSV()
 gui.displayData()

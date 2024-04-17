@@ -1,38 +1,130 @@
-class DataProvider:
-    _airPressureTrend = [0]
-    _airHumidityTrend = [0]
-    _airTemperatureTrend = [0]
+# import ModBus
+# import SPI
+# import I2C
+import csv
+import datetime
+
+class DataProvider: #TODO: remove the 0s
+    _airPressureTrend = []
+    _airHumidityTrend = []
+    _airTemperatureTrend = []
+    _phaseVoltageTrend = [[0], [0], [0]]
+    _phaseCurrentTrend = [[0], [0], [0]]
+    _firstOilTemperatureTrend = []
+    _secondOilTemperatureTrend = []
     _voltage = 0
     _current = 0
     _power = 0
-    _phaseVoltageTrend = [[0], [0], [0]]
-    _phaseCurrentTrend = [[0], [0], [0]]
+    _measurementsTime = []
 
-    def getCurrentAirPressure(self):
-        #TODO: implement SPI interfacing to acquire data
-        currentPressure = self._airPressureTrend[-1] + 2 #FIXME: this is not real data
 
+    # def __init__(
+    #         self, rogowskyPort, rogowskyAdress, loopBus, loopDevice, 
+    #         tempHumBus, tempHumDevice, 
+    #         thermo1Bus, thermo1Device,
+    #         thermo2Bus, thermo2Device,
+    #         thermo3Bus, thermo3Device,
+    #         ):
+        
+    #     self.rogowskyCoil = ModBus(port=rogowskyPort, peripheral_address=rogowskyAdress)
+    #     self.currentLoop = I2C(bus=loopBus, device=loopDevice)
+    #     self.tempHumSensor = I2C(busNumber=tempHumBus, deviceAddress=tempHumDevice)
+    #     self.thermo1 = SPI(bus=thermo1Bus, device=thermo1Device)
+    #     self.thermo2 = SPI(bus=thermo2Bus, device=thermo2Device)
+    #     self.thermo3 = SPI(bus=thermo3Bus, device=thermo3Device)
+
+    def updateData(self):
+        # If the length of any array is equal to the number of minutes in a day, erase the oldest entry to be replaced
+        if len(self._airPressureTrend) >= 1440:
+            self._airPressureTrend.pop(0)
+            self._airHumidityTrend.pop(0)
+            self._airTemperatureTrend.pop(0)
+            self._firstOilTemperatureTrend.pop(0)
+            self._secondOilTemperatureTrend.pop(0)
+            self._phaseVoltageTrend[0].pop(0)
+            self._phaseCurrentTrend[0].pop(0)
+            self._phaseVoltageTrend[1].pop(0)
+            self._phaseCurrentTrend[1].pop(0)
+            self._phaseVoltageTrend[2].pop(0)
+            self._phaseCurrentTrend[2].pop(0)
+            self._measurementsTime.pop(0)
+
+
+        # Time Section #
+        current_time = datetime.datetime.now()
+        min = current_time.minute if current_time.minute >= 10 else "0" + str(current_time.minute)
+        self._measurementsTime.append("{0}:{1}".format(current_time.hour, min))
+
+        # Air Section #
+        # currentPressure = self.currentLoop.readData(registerAddress, numBytes) TODO: make this work
+        currentPressure = self._airPressureTrend[-1] + 2 if len(self._airPressureTrend) != 0 else 0#FIXME: this is not real data
         self._airPressureTrend.append(currentPressure)
+
+        # currentHumidity = self.tempHumSensor.readData(registerAddress, numBytes) TODO: make this work
+        currentHumidity = self._airHumidityTrend[-1] + 5 if len(self._airHumidityTrend) != 0 else 0#FIXME: this is not real data
+        self._airHumidityTrend.append(currentHumidity)
+
+        # currentTemperature = self.tempHumSensor.readData(registerAddress, numBytes) TODO: make this work
+        currentTemperature = self._airTemperatureTrend[-1] + 1.5 if len(self._airTemperatureTrend) != 0 else 0 #FIXME: this is not real data
+        self._airTemperatureTrend.append(currentTemperature)
+
+        # Electrical Section #
+        #TBD
+
+        # Oil Section #
+        # currentFirstOilTemperature = self.thermo1.readData() TODO: make this work
+        currentFirstOilTemperature = self._firstOilTemperatureTrend[-1] + 2 if len(self._firstOilTemperatureTrend) != 0 else 0 #FIXME: this is not real data
+        self._firstOilTemperatureTrend.append(currentFirstOilTemperature)
+
+        # currentSecondOilTemperature = self.thermo2.readData() TODO: make this work
+        currentSecondOilTemperature = self._secondOilTemperatureTrend[-1] + 3 if len(self._secondOilTemperatureTrend) != 0 else 0#FIXME: this is not real data
+        self._secondOilTemperatureTrend.append(currentSecondOilTemperature)
+
+    def updateDataCSV(self):
+        self.updateData()
+        csvHeaders = ["Time", "Air Pressure", "Air Humidity", "Air Temperature", "First Oil Temperature", "Second Oil Temperature", "Phase 1 Voltage", "Phase 1 Current", "Phase 2 Voltage", "Phase 2 Current", "Phase 3 Voltage", "Phase 3 Current"]
+        # Open the CSV file in append mode
+        with open('data.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(csvHeaders)
+            for i in range(len(self._measurementsTime)):
+                data = [
+                    self._measurementsTime[i],
+                    self._airPressureTrend[i],
+                    self._airHumidityTrend[i],
+                    self._airTemperatureTrend[i],
+                    self._firstOilTemperatureTrend[i],
+                    self._secondOilTemperatureTrend[i],
+                    self._phaseVoltageTrend[0][i],
+                    self._phaseCurrentTrend[0][i],
+                    self._phaseVoltageTrend[1][i],
+                    self._phaseCurrentTrend[1][i],
+                    self._phaseVoltageTrend[2][i],
+                    self._phaseCurrentTrend[2][i]
+                ]
+                # Write the data to the CSV file
+                writer.writerow(data)
+        
+
+    def getCurrentOilTemperatures(self):
+        return self._firstOilTemperatureTrend[-1], self._secondOilTemperatureTrend[-1]
+
+    def getOilTemperaturesTrends(self):
+        return self._firstOilTemperatureTrend, self._secondOilTemperatureTrend
+        
+    def getCurrentAirPressure(self):
         return self._airPressureTrend[-1]
     
     def getAirPressureTrend(self):
         return self._airPressureTrend
     
     def getCurrentAirHumidity(self):
-        #TODO: implement SPI interfacing to acquire data
-        currentHumidity = self._airHumidityTrend[-1] + 5 #FIXME: this is not real data
-
-        self._airHumidityTrend.append(currentHumidity)
         return self._airHumidityTrend[-1]
     
     def getAirHumidityTrend(self):
         return self._airHumidityTrend
     
     def getCurrentAirTemperature(self):
-        #TODO: implement SPI interfacing to acquire data
-        currentTemperature = self._airTemperatureTrend[-1] + 1.5 #FIXME: this is not real data
-
-        self._airTemperatureTrend.append(currentTemperature)
         return self._airTemperatureTrend[-1]
     
     def getAirTemperatureTrend(self):
