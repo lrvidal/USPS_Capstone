@@ -287,9 +287,9 @@ CURRENT_CONCERNING = 7.4
 POWER_CONCERNING = VOLTAGE_CONCERNING * CURRENT_CONCERNING
 MOTOR_TEMP_CONCERNING = 230
 OIL_TEMP_CONCERNING = 300
-AIR_PRESSURE_CONCERNING = 100
-AIR_HUMIDITY_CONCERNING = 100
-AIR_TEMP_CONCERNING = 100
+AIR_PRESSURE_CONCERNING = 132
+AIR_HUMIDITY_CONCERNING = 50
+AIR_TEMP_CONCERNING = 212
 def isMeasurementConcerning(type, value):
     match type:
         case "Voltage":
@@ -311,6 +311,8 @@ def isMeasurementConcerning(type, value):
 
 
 window = tk.Tk()
+window.title("DUS Monitoring System")
+window.iconbitmap('./USPS.ico')
 notebook = ttk.Notebook(window)
 gui = GUI(window=window, notebook=notebook)
 
