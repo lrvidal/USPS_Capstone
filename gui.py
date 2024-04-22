@@ -310,7 +310,8 @@ def isMeasurementConcerning(type, value):
             return value > AIR_HUMIDITY_CONCERNING
         case "Air Temperature":
             return value > AIR_TEMP_CONCERNING
-
+        case _:
+            raise Exception("Invalid measurement type")
 
 window = tk.Tk()
 window.title("DUS Monitoring System")
