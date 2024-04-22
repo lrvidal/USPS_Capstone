@@ -282,6 +282,8 @@ class GUI:
         self.oil_axs[0, 1].text(0.5, 0.5, str(secondTempTrend[-1]) + " °F", fontsize=35, ha='center', color=secondOilColor)
         self.oil_canvas.draw()
 
+## CONSTANTS ZONE ##
+# these constants are used to determine if a measurement is concerning, making the text red on the GUI 
 VOLTAGE_CONCERNING = 230
 CURRENT_CONCERNING = 7.4
 POWER_CONCERNING = VOLTAGE_CONCERNING * CURRENT_CONCERNING
