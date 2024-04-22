@@ -1,3 +1,3 @@
-Time,Air Pressure,Air Humidity,Air Temperature,First Oil Temperature,Second Oil Temperature,Phase 1 Voltage,Phase 1 Current,Phase 2 Voltage,Phase 2 Current,Phase 3 Voltage,Phase 3 Current,Motor Temperature
-16:13,0,0,0,0,0,0,0,0,0,0,0,0
-16:14,2,5,1.5,2,3,1,1,2,2,3,3,4
+Time,Air Pressure,Air Humidity,Air Temperature,First Oil Temperature,Second Oil Temperature,Voltage,Current,Power,Phase 1 Voltage,Phase 1 Current,Phase 2 Voltage,Phase 2 Current,Phase 3 Voltage,Phase 3 Current,Motor Temperature
+14:55,0,0,0,0,0,0,10,0,0,0,0,0,0,0,0
+14:56,2,5,1.5,2,3,1,2,1,1,1,2,2,3,3,4

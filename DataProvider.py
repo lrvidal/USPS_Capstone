@@ -12,9 +12,9 @@ class DataProvider: #TODO: remove the 0s
     _phaseCurrentTrend = [[], [], []]
     _firstOilTemperatureTrend = []
     _secondOilTemperatureTrend = []
-    _voltage = 0
-    _current = 0
-    _power = 0
+    _voltages = []
+    _currents = []
+    _powers = []
     _measurementsTime = []
     _motorTemperatureTrend = []
 
@@ -42,6 +42,9 @@ class DataProvider: #TODO: remove the 0s
             self._airTemperatureTrend.pop(0)
             self._firstOilTemperatureTrend.pop(0)
             self._secondOilTemperatureTrend.pop(0)
+            self._voltages.pop(0)
+            self._currents.pop(0)
+            self._powers.pop(0)
             self._phaseVoltageTrend[0].pop(0)
             self._phaseCurrentTrend[0].pop(0)
             self._phaseVoltageTrend[1].pop(0)
@@ -72,9 +75,13 @@ class DataProvider: #TODO: remove the 0s
 
         # Electrical Section #
         #TODO: implement SPI interfacing to acquire data
-        self._voltage += 1
-        self._current += 0.2
-        self._power += 10
+        currentVoltage = self._voltages[-1] + 1 if len(self._voltages) != 0 else 0
+        currentCurrent = self._currents[-1] + 1 if len(self._currents) != 0 else 0
+        currentPower = self._powers[-1] + 1 if len(self._powers) != 0 else 0
+
+        self._voltages.append(currentVoltage)
+        self._currents.append(currentCurrent)
+        self._powers.append(currentPower)
 
         currentPhaseVoltage1 = self._phaseVoltageTrend[0][-1] + 1 if len(self._phaseVoltageTrend[0]) != 0 else 0
         currentPhaseCurrent1 = self._phaseCurrentTrend[0][-1] + 1 if len(self._phaseCurrentTrend[0]) != 0 else 0
@@ -105,7 +112,7 @@ class DataProvider: #TODO: remove the 0s
 
     def updateDataCSV(self):
         self.updateData()
-        csvHeaders = ["Time", "Air Pressure", "Air Humidity", "Air Temperature", "First Oil Temperature", "Second Oil Temperature", "Phase 1 Voltage", "Phase 1 Current", "Phase 2 Voltage", "Phase 2 Current", "Phase 3 Voltage", "Phase 3 Current", "Motor Temperature"]
+        csvHeaders = ["Time", "Air Pressure", "Air Humidity", "Air Temperature", "First Oil Temperature", "Second Oil Temperature", "Voltage", "Current", "Power", "Phase 1 Voltage", "Phase 1 Current", "Phase 2 Voltage", "Phase 2 Current", "Phase 3 Voltage", "Phase 3 Current", "Motor Temperature"]
         # Open the CSV file in append mode
         with open('data.csv', 'w', newline='') as file:
             writer = csv.writer(file)
@@ -118,6 +125,9 @@ class DataProvider: #TODO: remove the 0s
                     self._airTemperatureTrend[i],
                     self._firstOilTemperatureTrend[i],
                     self._secondOilTemperatureTrend[i],
+                    self._voltages[i],
+                    self._currents[i],
+                    self._powers[i],
                     self._phaseVoltageTrend[0][i],
                     self._phaseCurrentTrend[0][i],
                     self._phaseVoltageTrend[1][i],
@@ -155,7 +165,7 @@ class DataProvider: #TODO: remove the 0s
         return self._airTemperatureTrend
     
     def getElectricalAttributes(self):
-        return self._voltage, self._current, self._power
+        return self._voltages, self._currents, self._powers
     
     def getPhaseTrends(self):
         return self._phaseVoltageTrend, self._phaseCurrentTrend
