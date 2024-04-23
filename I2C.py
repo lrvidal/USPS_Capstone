@@ -8,6 +8,13 @@ class I2C:
     def readData(self, registerAddress, numBytes):
         try:
             data = self.bus.read_i2c_block_data(self.deviceAddress, registerAddress, numBytes)
+
+            # THIS MAY BE NEEDED #
+            # Convert the data
+            raw_adc = data[0] * 256 + data[1]
+            if raw_adc > 32767:
+                raw_adc -= 65535
+            
             return data
         except IOError as e:
             print(f"Error reading I2C data: {e}")
