@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
 from DataProvider import DataProvider
 import socket
 
@@ -149,6 +150,7 @@ class GUI:
         self.air_axs[1, 1].cla()
         self.air_axs[1, 1].plot(dataProvider.getTimeArray(), dataProvider.getAirHumidityTrend())
         self.air_axs[1, 1].set_title("Air Humidity Trend")
+        self.air_axs[1, 1].xaxis.set_major_locator(MaxNLocator(nbins=6))
         self.air_canvas.draw()
 
     def updateCurrentAirHumidity(self):
@@ -164,6 +166,7 @@ class GUI:
         self.air_axs[0, 1].cla()
         self.air_axs[0, 1].plot(dataProvider.getTimeArray(), dataProvider.getAirPressureTrend())
         self.air_axs[0, 1].set_title("Air Pressure Trend")
+        self.air_axs[0, 1].xaxis.set_major_locator(MaxNLocator(nbins=6))
         self.air_canvas.draw()
 
     def updateCurrentAirPressure(self):
@@ -179,6 +182,7 @@ class GUI:
         self.air_axs[2, 1].cla()
         self.air_axs[2, 1].plot(dataProvider.getTimeArray(), dataProvider.getAirTemperatureTrend())
         self.air_axs[2, 1].set_title("Air Temperature Trend")
+        self.air_axs[2, 1].xaxis.set_major_locator(MaxNLocator(nbins=6))
         self.air_canvas.draw()
 
     def updateCurrentAirTemperature(self):
@@ -203,6 +207,7 @@ class GUI:
         self.electrical_axs[0, 1].cla()
         self.electrical_axs[0, 1].plot(dataProvider.getTimeArray(), voltages)
         self.electrical_axs[0, 1].set_title("Voltage Trend")
+        self.electrical_axs[0, 1].xaxis.set_major_locator(MaxNLocator(nbins=6))
 
         currentColor = "red" if isMeasurementConcerning("Current", currents[-1]) else "black"
         self.electrical_axs[1, 0].cla()
@@ -214,6 +219,8 @@ class GUI:
         self.electrical_axs[1, 1].cla()
         self.electrical_axs[1, 1].plot(dataProvider.getTimeArray(), currents)
         self.electrical_axs[1, 1].set_title("Current Trend")
+        self.electrical_axs[1, 1].xaxis.set_major_locator(MaxNLocator(nbins=6))
+
 
         powerColor = "red" if isMeasurementConcerning("Power", powers[-1]) else "black"
         self.electrical_axs[2, 0].cla()
@@ -225,6 +232,8 @@ class GUI:
         self.electrical_axs[2, 1].cla()
         self.electrical_axs[2, 1].plot(dataProvider.getTimeArray(), currents)
         self.electrical_axs[2, 1].set_title("Power Trend")
+        self.electrical_axs[2, 1].xaxis.set_major_locator(MaxNLocator(nbins=6))
+
 
         self.electrical_canvas.draw()
 
@@ -242,6 +251,8 @@ class GUI:
         self.phase_axs[0, 1].cla()
         self.phase_axs[0, 1].set_title("Motor Temperature Trend")
         self.phase_axs[0, 1].plot(dataProvider.getTimeArray(), motorTemperatureTrend)
+        self.phase_axs[0, 1].xaxis.set_major_locator(MaxNLocator(nbins=6))
+
 
 
         self.phase_axs[1, 1].cla()
@@ -254,9 +265,11 @@ class GUI:
 
         self.phase_axs[1, 1].set_title("Phase Voltage")
         self.phase_axs[1, 1].legend()
+        self.phase_axs[1, 1].xaxis.set_major_locator(MaxNLocator(nbins=6))
 
         self.phase_axs[1, 0].set_title("Phase Current")
         self.phase_axs[1, 0].legend()
+        self.phase_axs[1, 0].xaxis.set_major_locator(MaxNLocator(nbins=6))
         self.phase_canvas.draw()
 
     def updateOilTemperatures(self):
@@ -266,6 +279,7 @@ class GUI:
         self.oil_axs[1, 0].plot(dataProvider.getTimeArray(), firstTempTrend, label="First Oil Temperature")
         self.oil_axs[1, 0].plot(dataProvider.getTimeArray(), secondTempTrend, label="Second Oil Temperature")
         self.oil_axs[1, 0].legend()
+        self.oil_axs[1, 0].xaxis.set_major_locator(MaxNLocator(nbins=6))
 
         firstOilColor = "red" if isMeasurementConcerning("Oil Temperature", firstTempTrend[-1]) else "black"
         self.oil_axs[0, 0].cla()
@@ -292,26 +306,18 @@ OIL_TEMP_CONCERNING = 300
 AIR_PRESSURE_CONCERNING = 132
 AIR_HUMIDITY_CONCERNING = 50
 AIR_TEMP_CONCERNING = 212
+CONCERNING_PARAMS = {
+    "Voltage": VOLTAGE_CONCERNING,
+    "Current": CURRENT_CONCERNING,
+    "Power": POWER_CONCERNING,
+    "Motor Temperature": MOTOR_TEMP_CONCERNING,
+    "Oil Temperature": OIL_TEMP_CONCERNING,
+    "Air Pressure": AIR_PRESSURE_CONCERNING,
+    "Air Humidity": AIR_HUMIDITY_CONCERNING,
+    "Air Temperature": AIR_TEMP_CONCERNING
+}
 def isMeasurementConcerning(type, value):
-    match type:
-        case "Voltage":
-            return value > VOLTAGE_CONCERNING
-        case "Current":
-            return value > CURRENT_CONCERNING
-        case "Power":
-            return value > POWER_CONCERNING
-        case "Motor Temperature":
-            return value > MOTOR_TEMP_CONCERNING
-        case "Oil Temperature":
-            return value > OIL_TEMP_CONCERNING
-        case "Air Pressure":
-            return value > AIR_PRESSURE_CONCERNING
-        case "Air Humidity":
-            return value > AIR_HUMIDITY_CONCERNING
-        case "Air Temperature":
-            return value > AIR_TEMP_CONCERNING
-        case _:
-            raise Exception("Invalid measurement type")
+    return value > CONCERNING_PARAMS[type]
 
 window = tk.Tk()
 window.title("DUS Monitoring System")

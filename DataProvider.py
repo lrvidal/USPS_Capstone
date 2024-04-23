@@ -4,7 +4,7 @@
 import csv
 import datetime
 
-class DataProvider: #TODO: remove the 0s
+class DataProvider:
     _airPressureTrend = []
     _airHumidityTrend = []
     _airTemperatureTrend = []
