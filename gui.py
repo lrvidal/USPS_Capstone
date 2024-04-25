@@ -50,20 +50,15 @@ class GUI:
         self.window = window
         self.notebook = notebook
         self.dataProvider = DataProvider()
-        self.electrical_tab = ttk.Frame(notebook)
         self.air_tab = ttk.Frame(notebook)
         self.oil_tab = ttk.Frame(notebook)
         self.download_tab = ttk.Frame(notebook)
         self.phase_tab = ttk.Frame(notebook)
 
-        notebook.add(self.electrical_tab, text="Electrical")
         notebook.add(self.phase_tab, text="Phase Electrical")
         notebook.add(self.oil_tab, text="Oil")
         notebook.add(self.air_tab, text="Air")
         notebook.add(self.download_tab, text="Download")
-
-        self.electrical_fig, self.electrical_axs = plt.subplots(3, 2, figsize=(10, 10))
-        self.electrical_canvas = FigureCanvasTkAgg(self.electrical_fig, master=self.electrical_tab)
 
         self.phase_fig, self.phase_axs = plt.subplots(2, 2, figsize=(10, 10))
         self.phase_canvas = FigureCanvasTkAgg(self.phase_fig, master=self.phase_tab)
@@ -107,18 +102,9 @@ class GUI:
     def displayData(self):
 
         # Add the tabs to the notebook
-        self.notebook.add(self.electrical_tab, text="Electrical")
         self.notebook.add(self.phase_tab, text="Phase Electrical")
         self.notebook.add(self.oil_tab, text="Oil")
         self.notebook.add(self.air_tab, text="Air")
-
-        # Plot voltage in the electrical tab
-        self.updateElectricalAttributes()
-        # Adjust spacing between subplots in the electrical tab
-        self.electrical_fig.tight_layout()
-
-        self.electrical_canvas.draw()
-        self.electrical_canvas.get_tk_widget().pack()
 
         # Plot phase trends in the phase tab
         self.updatePhaseTrends()
@@ -178,7 +164,6 @@ class GUI:
         self.updateCurrentAirTemperature()
         self.updateAirTemperatureTrend()
         self.updateOilTemperatures()
-        self.updateElectricalAttributes()
         self.updatePhaseTrends()
 
         self.window.after(UPDATE_DATA_TIME, self.updateData)
@@ -231,70 +216,27 @@ class GUI:
         self.air_axs[2, 0].text(0.5, 0.5, str(dataProvider.getCurrentAirTemperature()) + " °F", fontsize=35, ha='center', color=airTempColor)
         self.air_canvas.draw()
 
-    def updateElectricalAttributes(self):
-        voltages, currents, powers = dataProvider.getElectricalAttributes()
-
-        voltageColor = "red" if isMeasurementConcerning("Voltage", voltages[-1]) else "black"
-        self.electrical_axs[0, 0].cla()
-        self.electrical_axs[0, 0].set_title("Current Voltage")
-        self.electrical_axs[0, 0].set_xticks([])
-        self.electrical_axs[0, 0].set_yticks([])
-        self.electrical_axs[0, 0].text(0.5, 0.5, str(voltages[-1]) + " V", fontsize=35, ha='center', color=voltageColor)
-
-        self.electrical_axs[0, 1].cla()
-        self.electrical_axs[0, 1].plot(dataProvider.getTimeArray(), voltages)
-        self.electrical_axs[0, 1].set_title("Voltage Trend")
-        self.electrical_axs[0, 1].xaxis.set_major_locator(MaxNLocator(nbins=6))
-
-        currentColor = "red" if isMeasurementConcerning("Current", currents[-1]) else "black"
-        self.electrical_axs[1, 0].cla()
-        self.electrical_axs[1, 0].set_title("Current Current")
-        self.electrical_axs[1, 0].set_xticks([])
-        self.electrical_axs[1, 0].set_yticks([])
-        self.electrical_axs[1, 0].text(0.5, 0.5, str(currents[-1]) + " A", fontsize=35, ha='center', color=currentColor)
-
-        self.electrical_axs[1, 1].cla()
-        self.electrical_axs[1, 1].plot(dataProvider.getTimeArray(), currents)
-        self.electrical_axs[1, 1].set_title("Current Trend")
-        self.electrical_axs[1, 1].xaxis.set_major_locator(MaxNLocator(nbins=6))
-
-
-        powerColor = "red" if isMeasurementConcerning("Power", powers[-1]) else "black"
-        self.electrical_axs[2, 0].cla()
-        self.electrical_axs[2, 0].set_title("Current Power")
-        self.electrical_axs[2, 0].set_xticks([])
-        self.electrical_axs[2, 0].set_yticks([])
-        self.electrical_axs[2, 0].text(0.5, 0.5, str(powers[-1]) + " kW", fontsize=35, ha='center', color=powerColor)
-
-        self.electrical_axs[2, 1].cla()
-        self.electrical_axs[2, 1].plot(dataProvider.getTimeArray(), currents)
-        self.electrical_axs[2, 1].set_title("Power Trend")
-        self.electrical_axs[2, 1].xaxis.set_major_locator(MaxNLocator(nbins=6))
-
-
-        self.electrical_canvas.draw()
-
     def updatePhaseTrends(self):
-        motorTemperatureTrend = dataProvider.getMotorTemperatureTrend()
-
         self.phase_axs[0, 0].cla()
-        motorTempColor = "red" if isMeasurementConcerning("Motor Temperature", motorTemperatureTrend[-1]) else "black"
-        self.phase_axs[0, 0].cla()
-        self.phase_axs[0, 0].set_title("Current Motor Temperature")
-        self.phase_axs[0, 0].set_xticks([])
-        self.phase_axs[0, 0].set_yticks([])
-        self.phase_axs[0, 0].text(0.5, 0.5, str(motorTemperatureTrend[-1]) + " °F", fontsize=35, ha='center', color=motorTempColor)
-
-        self.phase_axs[0, 1].cla()
-        self.phase_axs[0, 1].set_title("Motor Temperature Trend")
-        self.phase_axs[0, 1].plot(dataProvider.getTimeArray(), motorTemperatureTrend)
-        self.phase_axs[0, 1].xaxis.set_major_locator(MaxNLocator(nbins=6))
-
-
-
         self.phase_axs[1, 1].cla()
         self.phase_axs[1, 0].cla()
         phaseVoltage, phaseCurrent = dataProvider.getPhaseTrends()
+
+        phaseStatus = dataProvider.getPhaseStatus()
+        phaseStatusColor = "black" if phaseStatus == 0 else "red"
+        phaseStatusMessages = {
+            0: "All Clear",
+            1: "Voltage Sequence wrong, Current Sequence normal",
+            2: "Voltage Sequence norman, Current Sequence wrong",
+            3: "Voltage Sequence wrong, Current Sequence wrong"
+        }
+
+        self.phase_axs[0, 0].cla()
+        self.phase_axs[0, 0].set_title("Current Status")
+        self.phase_axs[0, 0].set_xticks([])
+        self.phase_axs[0, 0].set_yticks([])
+        self.phase_axs[0, 0].text(0.5, 0.5, phaseStatusMessages[phaseStatus], fontsize=35, ha='center', color=phaseStatusColor)
+        self.phase_canvas.draw()
 
         for i in range(3):
             self.phase_axs[1, 1].plot(dataProvider.getTimeArray(), phaseVoltage[i], label=f"Phase {i+1}")
@@ -335,19 +277,11 @@ class GUI:
 
 ## CONSTANTS ZONE ##
 # these constants are used to determine if a measurement is concerning, making the text red on the GUI 
-VOLTAGE_CONCERNING = 230
-CURRENT_CONCERNING = 7.4
-POWER_CONCERNING = VOLTAGE_CONCERNING * CURRENT_CONCERNING
-MOTOR_TEMP_CONCERNING = 230
 OIL_TEMP_CONCERNING = 300
 AIR_PRESSURE_CONCERNING = 132
 AIR_HUMIDITY_CONCERNING = 50
 AIR_TEMP_CONCERNING = 212
 CONCERNING_PARAMS = {
-    "Voltage": VOLTAGE_CONCERNING,
-    "Current": CURRENT_CONCERNING,
-    "Power": POWER_CONCERNING,
-    "Motor Temperature": MOTOR_TEMP_CONCERNING,
     "Oil Temperature": OIL_TEMP_CONCERNING,
     "Air Pressure": AIR_PRESSURE_CONCERNING,
     "Air Humidity": AIR_HUMIDITY_CONCERNING,
