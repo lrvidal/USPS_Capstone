@@ -12,11 +12,7 @@ class DataProvider:
     _phaseCurrentTrend = [[], [], []]
     _firstOilTemperatureTrend = []
     _secondOilTemperatureTrend = []
-    _voltages = []
-    _currents = []
-    _powers = []
     _measurementsTime = []
-    _motorTemperatureTrend = []
 
 
     # def __init__( TODO: this stuff is not properly set up
@@ -42,9 +38,6 @@ class DataProvider:
             self._airTemperatureTrend.pop(0)
             self._firstOilTemperatureTrend.pop(0)
             self._secondOilTemperatureTrend.pop(0)
-            self._voltages.pop(0)
-            self._currents.pop(0)
-            self._powers.pop(0)
             self._phaseVoltageTrend[0].pop(0)
             self._phaseCurrentTrend[0].pop(0)
             self._phaseVoltageTrend[1].pop(0)
@@ -52,7 +45,6 @@ class DataProvider:
             self._phaseVoltageTrend[2].pop(0)
             self._phaseCurrentTrend[2].pop(0)
             self._measurementsTime.pop(0)
-            self._motorTemperatureTrend.pop(0)
 
 
         # Time Section #
@@ -79,9 +71,6 @@ class DataProvider:
         currentCurrent = self._currents[-1] + 1 if len(self._currents) != 0 else 0
         currentPower = self._powers[-1] + 1 if len(self._powers) != 0 else 0
 
-        self._voltages.append(currentVoltage)
-        self._currents.append(currentCurrent)
-        self._powers.append(currentPower)
 
         currentPhaseVoltage1 = self._phaseVoltageTrend[0][-1] + 1 if len(self._phaseVoltageTrend[0]) != 0 else 0
         currentPhaseCurrent1 = self._phaseCurrentTrend[0][-1] + 1 if len(self._phaseCurrentTrend[0]) != 0 else 0
@@ -97,10 +86,6 @@ class DataProvider:
         self._phaseVoltageTrend[2].append(currentPhaseVoltage3)
         self._phaseCurrentTrend[2].append(currentPhaseCurrent3)
 
-        #self.motorThermo.readData() TODO: make this work
-        currentMotorTemperature = self._motorTemperatureTrend[-1] + 4 if len(self._motorTemperatureTrend) != 0 else 0 #FIXME: this is not real data
-        self._motorTemperatureTrend.append(currentMotorTemperature)
-
         # Oil Section #
         # currentFirstOilTemperature = self.thermo1.readData() TODO: make this work
         currentFirstOilTemperature = self._firstOilTemperatureTrend[-1] + 2 if len(self._firstOilTemperatureTrend) != 0 else 0 #FIXME: this is not real data
@@ -112,7 +97,7 @@ class DataProvider:
 
     def updateDataCSV(self):
         self.updateData()
-        csvHeaders = ["Time", "Air Pressure", "Air Humidity", "Air Temperature", "First Oil Temperature", "Second Oil Temperature", "Voltage", "Current", "Power", "Phase 1 Voltage", "Phase 1 Current", "Phase 2 Voltage", "Phase 2 Current", "Phase 3 Voltage", "Phase 3 Current", "Motor Temperature"]
+        csvHeaders = ["Time", "Air Pressure", "Air Humidity", "Air Temperature", "First Oil Temperature", "Second Oil Temperature", "Phase 1 Voltage", "Phase 1 Current", "Phase 2 Voltage", "Phase 2 Current", "Phase 3 Voltage", "Phase 3 Current"]
         # Open the CSV file in append mode
         with open('data.csv', 'w', newline='') as file:
             writer = csv.writer(file)
@@ -125,21 +110,16 @@ class DataProvider:
                     self._airTemperatureTrend[i],
                     self._firstOilTemperatureTrend[i],
                     self._secondOilTemperatureTrend[i],
-                    self._voltages[i],
-                    self._currents[i],
-                    self._powers[i],
                     self._phaseVoltageTrend[0][i],
                     self._phaseCurrentTrend[0][i],
                     self._phaseVoltageTrend[1][i],
                     self._phaseCurrentTrend[1][i],
                     self._phaseVoltageTrend[2][i],
                     self._phaseCurrentTrend[2][i],
-                    self._motorTemperatureTrend[i]
                 ]
                 # Write the data to the CSV file
                 writer.writerow(data)
         
-
     def getCurrentOilTemperatures(self):
         return self._firstOilTemperatureTrend[-1], self._secondOilTemperatureTrend[-1]
 
@@ -164,14 +144,8 @@ class DataProvider:
     def getAirTemperatureTrend(self):
         return self._airTemperatureTrend
     
-    def getElectricalAttributes(self):
-        return self._voltages, self._currents, self._powers
-    
     def getPhaseTrends(self):
         return self._phaseVoltageTrend, self._phaseCurrentTrend
-    
-    def getMotorTemperatureTrend(self):
-        return self._motorTemperatureTrend
     
     def getTimeArray(self):
         return self._measurementsTime
