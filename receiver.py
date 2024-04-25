@@ -22,7 +22,7 @@ conn, addr = s.accept()
 print('Connected by', addr)
 date = datetime.datetime.now()
 # Open a file in binary mode to write the incoming data
-with open('data_{}_{}_{}.csv'.format(date.month(), date.day(), date.year()), 'wb') as f:
+with open('data_{}_{}_{}.csv'.format(date.month, date.day, date.year), 'wb') as f:
     while True:
         # Receive data from the client
         data = conn.recv(1024)
