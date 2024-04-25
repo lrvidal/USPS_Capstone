@@ -6,7 +6,6 @@ from matplotlib.ticker import MaxNLocator
 from DataProvider import DataProvider
 import socket
 
-dataProvider = DataProvider()
 
 ### I2C BUS NUMBERS ###
 I2C_BUS = '/dev/i2c-0'
@@ -37,11 +36,10 @@ ROGOWSKY_PHASE_SEQUENCE_REGISTER = 0xDC
 SPI_BUS = 0
 
 ### Thermocouple SPIs ###
-THERMOCOUPLE_LENGTH = 2
 THERMO1_DEVICE = 0
 THERMO2_DEVICE = 1
 
-#dataProvider = DataProvider(loopBus=LOOP_BUS , loopDevice=LOOP_DEVICE_ADDRESS)
+dataProvider = DataProvider(thermo1Bus=SPI_BUS, thermo1Device=THERMO1_DEVICE, thermo2Bus=SPI_BUS, thermo2Device=THERMO2_DEVICE)
 UPDATE_DATA_TIME = 60000 # Time for updating data in milliseconds
 class GUI:
     def __init__(self, window, notebook):
