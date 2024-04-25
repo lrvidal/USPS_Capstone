@@ -147,5 +147,9 @@ class DataProvider:
     def getPhaseTrends(self):
         return self._phaseVoltageTrend, self._phaseCurrentTrend
     
+    def getPhaseStatus(self):
+        # TODO: make call to the Rogowsky coil
+        return 0
+    
     def getTimeArray(self):
         return self._measurementsTime
