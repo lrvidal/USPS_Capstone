@@ -16,7 +16,8 @@ class DataProvider:
 
 
     # def __init__( TODO: this stuff is not properly set up
-    #         self, rogowskyPort, rogowskyAdress, loopBus, loopDevice, 
+    #         self, rogowskyPort, rogowskyAdress, 
+    #         loopBus, loopDevice, 
     #         tempHumBus, tempHumDevice, 
     #         thermo1Bus, thermo1Device,
     #         thermo2Bus, thermo2Device,
@@ -29,6 +30,9 @@ class DataProvider:
     #     self.thermo1 = SPI(bus=thermo1Bus, device=thermo1Device)
     #     self.thermo2 = SPI(bus=thermo2Bus, device=thermo2Device)
     #     self.motorThermo = SPI(bus=thermo3Bus, device=thermo3Device)
+
+    def cToF(self, celsius):
+        return celsius * 9/5 + 32
 
     def updateData(self):
         # If the length of any array is equal to the number of minutes in a day, erase the oldest entry to be replaced
@@ -87,12 +91,16 @@ class DataProvider:
         self._phaseCurrentTrend[2].append(currentPhaseCurrent3)
 
         # Oil Section #
-        # currentFirstOilTemperature = self.thermo1.readData() TODO: make this work
-        currentFirstOilTemperature = self._firstOilTemperatureTrend[-1] + 2 if len(self._firstOilTemperatureTrend) != 0 else 0 #FIXME: this is not real data
+        oilOneRead = self.thermo1.readData(length=4) #TODO: make this work
+        currentFirstOilTemperatureCelsius = int(str(oilOneRead)[4:15])
+        currentFirstOilTemperature = self.cToF(currentFirstOilTemperatureCelsius)
+        #currentFirstOilTemperature = self._firstOilTemperatureTrend[-1] + 2 if len(self._firstOilTemperatureTrend) != 0 else 0 #FIXME: this is not real data
         self._firstOilTemperatureTrend.append(currentFirstOilTemperature)
 
-        # currentSecondOilTemperature = self.thermo2.readData() TODO: make this work
-        currentSecondOilTemperature = self._secondOilTemperatureTrend[-1] + 3 if len(self._secondOilTemperatureTrend) != 0 else 0#FIXME: this is not real data
+        oilTwoRead = self.thermo2.readData(length=4) #TODO: make this work
+        currentTwoOilTemperatureCelsius = int(str(oilTwoRead)[4:15])
+        currentSecondOilTemperature = self.cToF(currentTwoOilTemperatureCelsius)
+        #currentSecondOilTemperature = self._secondOilTemperatureTrend[-1] + 3 if len(self._secondOilTemperatureTrend) != 0 else 0#FIXME: this is not real data
         self._secondOilTemperatureTrend.append(currentSecondOilTemperature)
 
     def updateDataCSV(self):
