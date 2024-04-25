@@ -76,7 +76,7 @@ class GUI:
         self.button.pack()
 
 
-    def fileDownload(self): #TODO: this needs testing
+    def fileDownload(self):
         ip = self.ip_entry.get()
         PORT_NUMBER = 5000
         try:
