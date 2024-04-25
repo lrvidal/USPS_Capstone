@@ -1,4 +1,5 @@
 import socket
+import datetime
 
 # The IP address of the server (this should be the IP address of the receiving machine)
 HOST = '0.0.0.0'  # This will listen on all available network interfaces
@@ -19,9 +20,9 @@ print('Server is listening...')
 conn, addr = s.accept()
 
 print('Connected by', addr)
-
+date = datetime.now()
 # Open a file in binary mode to write the incoming data
-with open('received_data.csv', 'wb') as f:
+with open('data_{}_{}_{}.csv'.format(date.month(), date.day(), date.year()), 'wb') as f:
     while True:
         # Receive data from the client
         data = conn.recv(1024)
