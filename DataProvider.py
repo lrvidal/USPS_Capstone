@@ -70,10 +70,6 @@ class DataProvider:
         self._airTemperatureTrend.append(currentTemperature)
 
         # Electrical Section #
-        #TODO: implement SPI interfacing to acquire data
-        currentVoltage = self._voltages[-1] + 1 if len(self._voltages) != 0 else 0
-        currentCurrent = self._currents[-1] + 1 if len(self._currents) != 0 else 0
-        currentPower = self._powers[-1] + 1 if len(self._powers) != 0 else 0
 
 
         currentPhaseVoltage1 = self._phaseVoltageTrend[0][-1] + 1 if len(self._phaseVoltageTrend[0]) != 0 else 0

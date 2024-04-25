@@ -10,7 +10,24 @@ class SPIDevice:
         return self.spi.xfer2(data)
 
     def read_data(self, length):
-        return self.spi.readbytes(length)
+        # Send a dummy byte to read 32-bit data from TC1
+        response = self.spi.xfer2([0x00, 0x00, 0x00, 0x00])
+        # Combine the response bytes into one 32-bit value
+        raw_data = response[0] << 24 | response[1] << 16 | response[2] << 8 | response[3]
+        
+        # Check if there are any errors
+        if (raw_data & 0x7):
+            print("Error reading the thermocouple data.")
+            return None
+        
+        # Extract the temperature data (first 14 bits of the second word)
+        value = raw_data >> 18
+        if value & 0x2000:  # Check if negative
+            value -= 0x4000
+        
+        # Convert to Celsius
+        temp_celsius = value * 0.25
+        return temp_celsius
 
     def close(self):
         self.spi.close()

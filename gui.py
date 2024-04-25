@@ -290,7 +290,7 @@ def isMeasurementConcerning(type, value):
 
 window = tk.Tk()
 window.title("DUS Monitoring System")
-window.iconbitmap('./USPS.ico')
+#window.iconbitmap('./USPS.ico')
 notebook = ttk.Notebook(window)
 gui = GUI(window=window, notebook=notebook)
 
