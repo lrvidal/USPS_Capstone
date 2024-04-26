@@ -264,14 +264,14 @@ class GUI:
         self.oil_axs[0, 0].set_title("Current First Oil Temperature")
         self.oil_axs[0, 0].set_xticks([])
         self.oil_axs[0, 0].set_yticks([])
-        self.oil_axs[0, 0].text(0.5, 0.5, str(firstTempTrend[-1]) + " °F", fontsize=35, ha='center', color=firstOilColor)
+        self.oil_axs[0, 0].text(0.5, 0.5, "%.2f" % firstTempTrend[-1] + " °F", fontsize=35, ha='center', color=firstOilColor)
 
         secondOilColor = "red" if isMeasurementConcerning("Oil Temperature", secondTempTrend[-1]) else "black"
         self.oil_axs[0, 1].cla()
         self.oil_axs[0, 1].set_title("Current Second Oil Temperature")
         self.oil_axs[0, 1].set_xticks([])
         self.oil_axs[0, 1].set_yticks([])
-        self.oil_axs[0, 1].text(0.5, 0.5, str(secondTempTrend[-1]) + " °F", fontsize=35, ha='center', color=secondOilColor)
+        self.oil_axs[0, 1].text(0.5, 0.5, "%.2f" % secondTempTrend[-1] + " °F", fontsize=35, ha='center', color=secondOilColor)
         self.oil_canvas.draw()
 
     def updateWaterLevelStatus(self):
