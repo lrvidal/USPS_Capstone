@@ -12,7 +12,7 @@ class I2C:
         time.sleep(0.015)  # Wait for the sensor to process the command
 
         # Read the 6 bytes of data
-        data = self.bus.read_i2c_block_data(self.deviceAddress, 6)
+        data = self.bus.read_i2c_block_data(self.deviceAddress, 0)
 
         # Convert the data
         temp = data[0] * 256 + data[1]
