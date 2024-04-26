@@ -35,7 +35,7 @@ class DataProvider:
         
         self.rogowskyCoil = ModBus.ModBus(port=rogowskyPort, peripheral_address=rogowskyAdress)
         #self.currentLoop = I2C.I2C(busNumber=loopBus, deviceAddress=loopDevice)
-        self.tempHumSensor = I2C.I2C(busNumber=tempHumBus, deviceAddress=tempHumDevice)
+        #self.tempHumSensor = I2C.I2C(busNumber=tempHumBus, deviceAddress=tempHumDevice) FIXME: uncomment
         self.thermo1 = SPI.SPIDevice(bus=thermo1Bus, device=thermo1Device)
         self.thermo2 = SPI.SPIDevice(bus=thermo2Bus, device=thermo2Device)
     #     self.motorThermo = SPI(bus=thermo3Bus, device=thermo3Device)
@@ -72,7 +72,7 @@ class DataProvider:
         currentPressure = 1 #self.currentLoop.read_pressure()
         self._airPressureTrend.append(currentPressure)
 
-        currentTemperature, currentHumidity = self.tempHumSensor.read_sht30()
+        currentTemperature, currentHumidity = 1, 2 #self.tempHumSensor.read_sht30() FIXME: uncomment
         
         self._airHumidityTrend.append(currentHumidity)
         self._airTemperatureTrend.append(self.cToF(currentTemperature))
