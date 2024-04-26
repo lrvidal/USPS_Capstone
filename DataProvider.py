@@ -25,7 +25,7 @@ class DataProvider:
              ):
         
     #     self.rogowskyCoil = ModBus(port=rogowskyPort, peripheral_address=rogowskyAdress)
-        self.currentLoop = I2C.I2C(bus=loopBus, device=loopDevice)
+        self.currentLoop = I2C.I2C(busNumber=loopBus, device=loopDevice)
         self.tempHumSensor = I2C.I2C(busNumber=tempHumBus, deviceAddress=tempHumDevice)
         self.thermo1 = SPI.SPIDevice(bus=thermo1Bus, device=thermo1Device)
         self.thermo2 = SPI.SPIDevice(bus=thermo2Bus, device=thermo2Device)
