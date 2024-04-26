@@ -8,7 +8,7 @@ import socket
 
 
 ### I2C BUS NUMBERS ###
-I2C_BUS = 1
+I2C_BUS = 0
 
 ### Pressure Transducer Current Loop  I2C ###
 LOOP_DEVICE_ADDRESS = 0x48
