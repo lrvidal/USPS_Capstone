@@ -1,8 +1,17 @@
-# import ModBus
+import ModBus
 import SPI
 import I2C
 import csv
 import datetime
+
+ROGOWSKY_PHASE_1_CURRENT_REGISTER = 0x3E8
+ROGOWSKY_PHASE_2_CURRENT_REGISTER = 0x3EA
+ROGOWSKY_PHASE_3_CURRENT_REGISTER = 0x3EC
+ROGOWSKY_PHASE_1_VOLTAGE_REGISTER = 0x3F2
+ROGOWSKY_PHASE_2_VOLTAGE_REGISTER = 0x3F4
+ROGOWSKY_PHASE_3_VOLTAGE_REGISTER = 0x3F6
+ROGOWSKY_PHASE_POWER_REGISTER = 0x40A
+ROGOWSKY_PHASE_SEQUENCE_REGISTER = 0xDC
 
 class DataProvider:
     _airPressureTrend = []
@@ -15,17 +24,17 @@ class DataProvider:
     _measurementsTime = []
 
 
-    def __init__( #TODO: this stuff is not properly set up
+    def __init__(
              self, 
-    #         rogowskyPort, rogowskyAdress, 
+             rogowskyPort, rogowskyAdress, 
              loopBus, loopDevice, 
              tempHumBus, tempHumDevice, 
              thermo1Bus, thermo1Device,
              thermo2Bus, thermo2Device
              ):
         
-    #     self.rogowskyCoil = ModBus(port=rogowskyPort, peripheral_address=rogowskyAdress)
-        self.currentLoop = I2C.I2C(busNumber=loopBus, deviceAddress=loopDevice)
+        self.rogowskyCoil = ModBus.ModBus(port=rogowskyPort, peripheral_address=rogowskyAdress)
+        #self.currentLoop = I2C.I2C(busNumber=loopBus, deviceAddress=loopDevice)
         self.tempHumSensor = I2C.I2C(busNumber=tempHumBus, deviceAddress=tempHumDevice)
         self.thermo1 = SPI.SPIDevice(bus=thermo1Bus, device=thermo1Device)
         self.thermo2 = SPI.SPIDevice(bus=thermo2Bus, device=thermo2Device)
@@ -60,7 +69,7 @@ class DataProvider:
         self._measurementsTime.append("{0}:{1}".format(current_time.hour, min))
 
         # Air Section #
-        currentPressure = self.currentLoop.read_pressure()
+        currentPressure = 1 #self.currentLoop.read_pressure()
         self._airPressureTrend.append(currentPressure)
 
         currentTemperature, currentHumidity = self.tempHumSensor.read_sht30()
@@ -146,8 +155,8 @@ class DataProvider:
         return self._phaseVoltageTrend, self._phaseCurrentTrend
     
     def getPhaseStatus(self):
-        # TODO: make call to the Rogowsky coil
-        return 1
+        phaseStatus = self.rogowskyCoil.readData(ROGOWSKY_PHASE_SEQUENCE_REGISTER)
+        return phaseStatus
     
     def getWaterLevelStatus(self):
         # TODO: read from the water level sensor
