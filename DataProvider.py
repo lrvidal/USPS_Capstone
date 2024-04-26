@@ -65,18 +65,11 @@ class DataProvider:
         self._airPressureTrend.append(currentPressure)
 
         currentTemperature, currentHumidity = self.tempHumSensor.read_sht30()
-        print(currentHumidity)
-        print(currentTemperature)
         
-        currentHumidity = self._airHumidityTrend[-1] + 5 if len(self._airHumidityTrend) != 0 else 0#FIXME: this is not real data
         self._airHumidityTrend.append(currentHumidity)
-
-        # currentTemperature = self.tempHumSensor.readData(registerAddress, numBytes) TODO: make this work
-        currentTemperature = self._airTemperatureTrend[-1] + 1.5 if len(self._airTemperatureTrend) != 0 else 0 #FIXME: this is not real data
-        self._airTemperatureTrend.append(currentTemperature)
+        self._airTemperatureTrend.append(self.cToF(currentTemperature))
 
         # Electrical Section #
-
 
         currentPhaseVoltage1 = self._phaseVoltageTrend[0][-1] + 1 if len(self._phaseVoltageTrend[0]) != 0 else 0
         currentPhaseCurrent1 = self._phaseCurrentTrend[0][-1] + 1 if len(self._phaseCurrentTrend[0]) != 0 else 0
