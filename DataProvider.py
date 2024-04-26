@@ -79,7 +79,9 @@ class DataProvider:
 
         # Electrical Section #
 
-        currentPhaseVoltage1 = self._phaseVoltageTrend[0][-1] + 1 if len(self._phaseVoltageTrend[0]) != 0 else 0
+
+        currentPhaseVoltage1 = self.rogowskyCoil.readData(ROGOWSKY_PHASE_1_VOLTAGE_REGISTER)
+        print(currentPhaseVoltage1)
         currentPhaseCurrent1 = self._phaseCurrentTrend[0][-1] + 1 if len(self._phaseCurrentTrend[0]) != 0 else 0
         currentPhaseVoltage2 = self._phaseVoltageTrend[1][-1] + 2 if len(self._phaseVoltageTrend[1]) != 0 else 0
         currentPhaseCurrent2 = self._phaseCurrentTrend[1][-1] + 2 if len(self._phaseCurrentTrend[1]) != 0 else 0
