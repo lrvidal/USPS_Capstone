@@ -28,8 +28,8 @@ class DataProvider:
     #     self.rogowskyCoil = ModBus(port=rogowskyPort, peripheral_address=rogowskyAdress)
     #     self.currentLoop = I2C(bus=loopBus, device=loopDevice)
     #     self.tempHumSensor = I2C(busNumber=tempHumBus, deviceAddress=tempHumDevice)
-        self.thermo1 = SPI(bus=thermo1Bus, device=thermo1Device)
-        self.thermo2 = SPI(bus=thermo2Bus, device=thermo2Device)
+        self.thermo1 = SPI.SPIDevice(bus=thermo1Bus, device=thermo1Device)
+        self.thermo2 = SPI.SPIDevice(bus=thermo2Bus, device=thermo2Device)
     #     self.motorThermo = SPI(bus=thermo3Bus, device=thermo3Device)
 
     def cToF(self, celsius):
