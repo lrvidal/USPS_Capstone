@@ -1,6 +1,6 @@
 # import ModBus
 import SPI
-# import I2C
+import I2C
 import csv
 import datetime
 
@@ -26,7 +26,7 @@ class DataProvider:
         
     #     self.rogowskyCoil = ModBus(port=rogowskyPort, peripheral_address=rogowskyAdress)
     #     self.currentLoop = I2C(bus=loopBus, device=loopDevice)
-    #     self.tempHumSensor = I2C(busNumber=tempHumBus, deviceAddress=tempHumDevice)
+        self.tempHumSensor = I2C.I2C(busNumber=tempHumBus, deviceAddress=tempHumDevice)
         self.thermo1 = SPI.SPIDevice(bus=thermo1Bus, device=thermo1Device)
         self.thermo2 = SPI.SPIDevice(bus=thermo2Bus, device=thermo2Device)
     #     self.motorThermo = SPI(bus=thermo3Bus, device=thermo3Device)
@@ -64,7 +64,10 @@ class DataProvider:
         currentPressure = self._airPressureTrend[-1] + 2 if len(self._airPressureTrend) != 0 else 0#FIXME: this is not real data
         self._airPressureTrend.append(currentPressure)
 
-        # currentHumidity = self.tempHumSensor.readData(registerAddress, numBytes) TODO: make this work
+        currentTemperature, currentHumidity = self.tempHumSensor.read_sht30()
+        print(currentHumidity)
+        print(currentTemperature)
+        
         currentHumidity = self._airHumidityTrend[-1] + 5 if len(self._airHumidityTrend) != 0 else 0#FIXME: this is not real data
         self._airHumidityTrend.append(currentHumidity)
 
