@@ -5,6 +5,8 @@ class SPIDevice:
         self.spi = spidev.SpiDev()
         self.spi.open(bus, device)
         self.spi.max_speed_hz = 1000000  # Set SPI clock speed (1 MHz)
+        self.slope = (100 - 0) / (86.75 - 3)  # Calculate the slope
+        self.intercept = 0 - self.slope * 3  # Calculate the intercept
 
     def transfer(self, data):
         return self.spi.xfer2(data)
@@ -27,6 +29,10 @@ class SPIDevice:
         
         # Convert to Celsius
         temp_celsius = value * 0.25
+
+        # Normalize the temperature
+        temp_celsius = self.slope * temp_celsius + self.intercept
+
         return temp_celsius
 
     def close(self):
