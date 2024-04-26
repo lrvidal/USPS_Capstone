@@ -226,18 +226,18 @@ class GUI:
         phaseStatusMessages = {
             0: "All Clear",
             1: """Voltage Sequence wrong, 
-                  Current Sequence normal""",
+            Current Sequence normal""",
             2: """Voltage Sequence normal, 
-                  Current Sequence wrong""",
+            Current Sequence wrong""",
             3: """Voltage Sequence wrong, 
-                  Current Sequence wrong""",
+            Current Sequence wrong""",
         }
 
         self.phase_axs[0, 0].cla()
         self.phase_axs[0, 0].set_title("Current Status")
         self.phase_axs[0, 0].set_xticks([])
         self.phase_axs[0, 0].set_yticks([])
-        self.phase_axs[0, 0].text(0.5, 0.5, phaseStatusMessages[phaseStatus], fontsize=35, ha='center', color=phaseStatusColor)
+        self.phase_axs[0, 0].text(0.5, 0.5, phaseStatusMessages[phaseStatus], fontsize=25, ha='center', color=phaseStatusColor)
         self.phase_canvas.draw()
 
         for i in range(3):
