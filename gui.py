@@ -183,7 +183,7 @@ class GUI:
         self.air_axs[1, 0].set_title("Current Air Humidity")
         self.air_axs[1, 0].set_xticks([])
         self.air_axs[1, 0].set_yticks([])
-        self.air_axs[1, 0].text(0.5, 0.5, str(dataProvider.getCurrentAirHumidity()) + " %RH", fontsize=35, ha='center', color=airHumidityColor)
+        self.air_axs[1, 0].text(0.5, 0.5, "%.2f" % dataProvider.getCurrentAirHumidity() + " %RH", fontsize=35, ha='center', color=airHumidityColor)
         self.air_canvas.draw()
 
     def updateAirPressureTrend(self):
@@ -199,7 +199,7 @@ class GUI:
         self.air_axs[0, 0].set_title("Current Air Pressure")
         self.air_axs[0, 0].set_xticks([])
         self.air_axs[0, 0].set_yticks([])
-        self.air_axs[0, 0].text(0.5, 0.5, str(dataProvider.getCurrentAirPressure()) + " psi", fontsize=35, ha='center', color=airPressureColor)
+        self.air_axs[0, 0].text(0.5, 0.5, "%.2f" % dataProvider.getCurrentAirPressure() + " psi", fontsize=35, ha='center', color=airPressureColor)
         self.air_canvas.draw()
     
     def updateAirTemperatureTrend(self):
@@ -215,7 +215,7 @@ class GUI:
         self.air_axs[2, 0].set_title("Current Air Temperature")
         self.air_axs[2, 0].set_xticks([])
         self.air_axs[2, 0].set_yticks([])
-        self.air_axs[2, 0].text(0.5, 0.5, str(dataProvider.getCurrentAirTemperature()) + " °F", fontsize=35, ha='center', color=airTempColor)
+        self.air_axs[2, 0].text(0.5, 0.5, "%.2f" % dataProvider.getCurrentAirTemperature() + " °F", fontsize=35, ha='center', color=airTempColor)
         self.air_canvas.draw()
 
     def updatePhaseTrends(self):
