@@ -45,7 +45,6 @@ class GUI:
     def __init__(self, window, notebook):
         self.window = window
         self.notebook = notebook
-        self.dataProvider = DataProvider()
         self.air_tab = ttk.Frame(notebook)
         self.oil_tab = ttk.Frame(notebook)
         self.download_tab = ttk.Frame(notebook)
