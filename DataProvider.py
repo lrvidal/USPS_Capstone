@@ -88,11 +88,11 @@ class DataProvider:
         self._phaseCurrentTrend[2].append(currentPhaseCurrent3)
 
         # Oil Section #
-        oilOneRead = self.thermo1.readData(length=4) #TODO: make this work
+        oilOneRead = self.thermo1.read_data(length=4) #TODO: make this work
         currentFirstOilTemperature = self.cToF(oilOneRead)
         self._firstOilTemperatureTrend.append(currentFirstOilTemperature)
 
-        oilTwoRead = self.thermo2.readData(length=4) #TODO: make this work
+        oilTwoRead = self.thermo2.read_data(length=4) #TODO: make this work
         currentSecondOilTemperature = self.cToF(oilTwoRead)
         self._secondOilTemperatureTrend.append(currentSecondOilTemperature)
 
