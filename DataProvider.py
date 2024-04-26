@@ -19,10 +19,9 @@ class DataProvider:
              self, 
     #         rogowskyPort, rogowskyAdress, 
     #         loopBus, loopDevice, 
-    #         tempHumBus, tempHumDevice, 
+             tempHumBus, tempHumDevice, 
              thermo1Bus, thermo1Device,
-             thermo2Bus, thermo2Device,
-    #         thermo3Bus, thermo3Device,
+             thermo2Bus, thermo2Device
              ):
         
     #     self.rogowskyCoil = ModBus(port=rogowskyPort, peripheral_address=rogowskyAdress)

@@ -8,7 +8,7 @@ import socket
 
 
 ### I2C BUS NUMBERS ###
-I2C_BUS = '/dev/i2c-0'
+I2C_BUS = 1
 
 ### Pressure Transducer Current Loop  I2C ###
 LOOP_DEVICE_ADDRESS = 0x48
@@ -39,7 +39,10 @@ SPI_BUS = 0
 THERMO1_DEVICE = 0
 THERMO2_DEVICE = 1
 
-dataProvider = DataProvider(thermo1Bus=SPI_BUS, thermo1Device=THERMO1_DEVICE, thermo2Bus=SPI_BUS, thermo2Device=THERMO2_DEVICE)
+dataProvider = DataProvider(thermo1Bus=SPI_BUS, thermo1Device=THERMO1_DEVICE,
+                            thermo2Bus=SPI_BUS, thermo2Device=THERMO2_DEVICE,
+                            tempHumBus=I2C_BUS, tempHumDevice=AIR_TEMP_HUMIDITY_DEVICE_ADDRESS
+                            )
 UPDATE_DATA_TIME = 60000 # Time for updating data in milliseconds
 class GUI:
     def __init__(self, window, notebook):
