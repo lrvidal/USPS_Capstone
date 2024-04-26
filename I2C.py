@@ -8,6 +8,7 @@ class I2C:
 
     def read_sht30(self):
         # Send the command to read temperature and humidity
+        print(self.deviceAddress)
         self.bus.write_i2c_block_data(self.deviceAddress, 0x24, [0x00])
         time.sleep(0.015)  # Wait for the sensor to process the command
 
