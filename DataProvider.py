@@ -33,6 +33,9 @@ class DataProvider:
     #     self.motorThermo = SPI(bus=thermo3Bus, device=thermo3Device)
 
     def cToF(self, celsius):
+        if celsius == None:
+            return -999
+
         return celsius * 9/5 + 32
 
     def updateData(self):
