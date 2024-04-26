@@ -303,7 +303,7 @@ CONCERNING_PARAMS = {
     "Air Temperature": AIR_TEMP_CONCERNING
 }
 def isMeasurementConcerning(type, value):
-    return value > CONCERNING_PARAMS[type]
+    return float(value) > CONCERNING_PARAMS[type]
 
 window = tk.Tk()
 window.title("DUS Monitoring System")
