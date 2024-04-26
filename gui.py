@@ -225,9 +225,12 @@ class GUI:
         phaseStatusColor = "black" if phaseStatus == 0 else "red"
         phaseStatusMessages = {
             0: "All Clear",
-            1: "Voltage Sequence wrong, Current Sequence normal",
-            2: "Voltage Sequence norman, Current Sequence wrong",
-            3: "Voltage Sequence wrong, Current Sequence wrong"
+            1: """Voltage Sequence wrong, 
+                  Current Sequence normal""",
+            2: """Voltage Sequence normal, 
+                  Current Sequence wrong""",
+            3: """Voltage Sequence wrong, 
+                  Current Sequence wrong""",
         }
 
         self.phase_axs[0, 0].cla()
@@ -285,7 +288,7 @@ class GUI:
         self.oil_axs[1, 1].set_title("Water Level Sensor Status")
         self.oil_axs[1, 1].set_xticks([])
         self.oil_axs[1, 1].set_yticks([])
-        self.oil_axs[1, 1].text(0.5, 0.5, waterLevelMessages, fontsize=35, ha='center', color=waterLevelColor)
+        self.oil_axs[1, 1].text(0.5, 0.5, waterLevelMessages[waterLevelStatus], fontsize=35, ha='center', color=waterLevelColor)
         self.oil_canvas.draw()
 ## CONSTANTS ZONE ##
 # these constants are used to determine if a measurement is concerning, making the text red on the GUI 
