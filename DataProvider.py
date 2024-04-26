@@ -18,14 +18,14 @@ class DataProvider:
     def __init__( #TODO: this stuff is not properly set up
              self, 
     #         rogowskyPort, rogowskyAdress, 
-    #         loopBus, loopDevice, 
+             loopBus, loopDevice, 
              tempHumBus, tempHumDevice, 
              thermo1Bus, thermo1Device,
              thermo2Bus, thermo2Device
              ):
         
     #     self.rogowskyCoil = ModBus(port=rogowskyPort, peripheral_address=rogowskyAdress)
-    #     self.currentLoop = I2C(bus=loopBus, device=loopDevice)
+        self.currentLoop = I2C(bus=loopBus, device=loopDevice)
         self.tempHumSensor = I2C.I2C(busNumber=tempHumBus, deviceAddress=tempHumDevice)
         self.thermo1 = SPI.SPIDevice(bus=thermo1Bus, device=thermo1Device)
         self.thermo2 = SPI.SPIDevice(bus=thermo2Bus, device=thermo2Device)
@@ -60,8 +60,7 @@ class DataProvider:
         self._measurementsTime.append("{0}:{1}".format(current_time.hour, min))
 
         # Air Section #
-        # currentPressure = self.currentLoop.readData(registerAddress, numBytes) TODO: make this work
-        currentPressure = self._airPressureTrend[-1] + 2 if len(self._airPressureTrend) != 0 else 0#FIXME: this is not real data
+        currentPressure = self.currentLoop.read_pressure()
         self._airPressureTrend.append(currentPressure)
 
         currentTemperature, currentHumidity = self.tempHumSensor.read_sht30()

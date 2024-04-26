@@ -40,7 +40,8 @@ THERMO2_DEVICE = 1
 
 dataProvider = DataProvider(thermo1Bus=SPI_BUS, thermo1Device=THERMO1_DEVICE,
                             thermo2Bus=SPI_BUS, thermo2Device=THERMO2_DEVICE,
-                            tempHumBus=I2C_BUS, tempHumDevice=AIR_TEMP_HUMIDITY_DEVICE_ADDRESS
+                            tempHumBus=I2C_BUS, tempHumDevice=AIR_TEMP_HUMIDITY_DEVICE_ADDRESS,
+                            loopBus=I2C_BUS, loopDevice=LOOP_DEVICE_ADDRESS
                             )
 UPDATE_DATA_TIME = 60000 # Time for updating data in milliseconds
 class GUI:
