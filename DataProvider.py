@@ -36,6 +36,7 @@ class DataProvider:
         if celsius == None:
             return -999
 
+        return celsius
         return celsius * 9/5 + 32
 
     def updateData(self):
