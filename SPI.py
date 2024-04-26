@@ -19,7 +19,7 @@ class SPIDevice:
         
         # Check if there are any errors
         if (raw_data & 0x7):
-            print("Error reading the thermocouple data.")
+            print("Error reading thermocouple {} data.".format(self.device + 1))
             return None
         
         # Extract the temperature data (first 14 bits of the second word)

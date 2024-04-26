@@ -36,7 +36,6 @@ class DataProvider:
         if celsius == None:
             return -999
 
-        return celsius
         return celsius * 9/5 + 32
 
     def updateData(self):
@@ -92,11 +91,11 @@ class DataProvider:
         self._phaseCurrentTrend[2].append(currentPhaseCurrent3)
 
         # Oil Section #
-        oilOneRead = self.thermo1.read_data(length=4) #TODO: make this work
+        oilOneRead = self.thermo1.read_data(length=4)
         currentFirstOilTemperature = self.cToF(oilOneRead)
         self._firstOilTemperatureTrend.append(currentFirstOilTemperature)
 
-        oilTwoRead = self.thermo2.read_data(length=4) #TODO: make this work
+        oilTwoRead = self.thermo2.read_data(length=4)
         currentSecondOilTemperature = self.cToF(oilTwoRead)
         self._secondOilTemperatureTrend.append(currentSecondOilTemperature)
 
@@ -154,7 +153,11 @@ class DataProvider:
     
     def getPhaseStatus(self):
         # TODO: make call to the Rogowsky coil
-        return 0
+        return 1
     
+    def getWaterLevelStatus(self):
+        # TODO: read from the water level sensor
+        return 0
+
     def getTimeArray(self):
         return self._measurementsTime

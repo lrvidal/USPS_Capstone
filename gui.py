@@ -110,6 +110,9 @@ class GUI:
         # Plot oil temperature trends in the oil tab
         self.updateOilTemperatures()
 
+        # Plot water level sensor status in the oil tab
+        self.updateWaterLevelStatus()
+
         # Adjust spacing between subplots in the oil tab
         self.oil_fig.tight_layout()
 
@@ -159,6 +162,7 @@ class GUI:
         self.updateCurrentAirTemperature()
         self.updateAirTemperatureTrend()
         self.updateOilTemperatures()
+        self.updateWaterLevelStatus()
         self.updatePhaseTrends()
 
         self.window.after(UPDATE_DATA_TIME, self.updateData)
@@ -270,6 +274,19 @@ class GUI:
         self.oil_axs[0, 1].text(0.5, 0.5, str(secondTempTrend[-1]) + " °F", fontsize=35, ha='center', color=secondOilColor)
         self.oil_canvas.draw()
 
+    def updateWaterLevelStatus(self):
+        waterLevelStatus = dataProvider.getWaterLevelStatus()
+        waterLevelColor = "black" if waterLevelStatus == 0 else "red"
+        waterLevelMessages = {
+            0: "Normal",
+            1: "Check Water Tank"
+        }
+        self.oil_axs[1, 1].cla()
+        self.oil_axs[1, 1].set_title("Water Level Sensor Status")
+        self.oil_axs[1, 1].set_xticks([])
+        self.oil_axs[1, 1].set_yticks([])
+        self.oil_axs[1, 1].text(0.5, 0.5, waterLevelMessages, fontsize=35, ha='center', color=waterLevelColor)
+        self.oil_canvas.draw()
 ## CONSTANTS ZONE ##
 # these constants are used to determine if a measurement is concerning, making the text red on the GUI 
 OIL_TEMP_CONCERNING = 300
