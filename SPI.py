@@ -31,7 +31,7 @@ class SPIDevice:
         temp_celsius = value * 0.25
 
         # Normalize the temperature
-        #temp_celsius = self.slope * temp_celsius + self.intercept
+        temp_celsius = self.slope * temp_celsius + self.intercept
 
         return temp_celsius
 
