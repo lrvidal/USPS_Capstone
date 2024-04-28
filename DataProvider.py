@@ -3,6 +3,7 @@ import SPI
 import I2C
 import csv
 import datetime
+import RPi.GPIO as GPIO
 
 ROGOWSKY_PHASE_1_CURRENT_REGISTER = 0x3E8
 ROGOWSKY_PHASE_2_CURRENT_REGISTER = 0x3EA
@@ -161,8 +162,14 @@ class DataProvider:
         return phaseStatus
     
     def getWaterLevelStatus(self):
-        # TODO: read from the water level sensor
-        return 0
+
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(18, GPIO.IN)
+
+        if GPIO.input(18) == GPIO.HIGH:
+            return 1
+        else:
+            return 0
 
     def getTimeArray(self):
         return self._measurementsTime
