@@ -13,7 +13,7 @@ ROGOWSKY_PHASE_2_VOLTAGE_REGISTER = 1012
 ROGOWSKY_PHASE_3_VOLTAGE_REGISTER = 1014
 ROGOWSKY_PHASE_SEQUENCE_REGISTER = 220
 
-ERROR_MESSAGE = "error\nreading\ndata"
+ERROR_MESSAGE = "Error\nReading\nData"
 
 class DataProvider:
     _airPressureTrend = []
