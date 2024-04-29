@@ -71,7 +71,9 @@ class DataProvider:
         currentPressure = 1 #self.currentLoop.read_pressure()
         self._airPressureTrend.append(currentPressure)
 
-        currentTemperature, currentHumidity = 1, 2 #self.tempHumSensor.read_sht30() FIXME: uncomment
+        currentTemperature, currentHumidity = self.tempHumSensor.read_sht30()
+        currentTemperature = currentTemperature or -999
+        currentHumidity = currentHumidity or -999
         
         self._airHumidityTrend.append(currentHumidity)
         self._airTemperatureTrend.append(self.cToF(currentTemperature))
