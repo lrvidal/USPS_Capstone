@@ -4,7 +4,7 @@ import time
 class ModBus:
     def __init__(self, port, address):
         # Initialize Modbus Reader
-        self.instr = minimalmodbus.Instrument('/dev/ttyS0', 1)
+        self.instr = minimalmodbus.Instrument(port, address)
         self.instr.serial.baudrate = 9600
         self.instr.handle_local_echo = False
 
