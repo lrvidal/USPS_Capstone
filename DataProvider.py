@@ -34,8 +34,8 @@ class DataProvider:
              ):
         
         self.rogowskyCoil = ModBus.ModBus(port=rogowskyPort, address=rogowskyAdress)
-        #self.currentLoop = I2C.I2C(busNumber=loopBus, deviceAddress=loopDevice)
-        #self.tempHumSensor = I2C.I2C(busNumber=tempHumBus, deviceAddress=tempHumDevice) FIXME: uncomment
+        self.currentLoop = I2C.I2C(busNumber=loopBus, deviceAddress=loopDevice)
+        self.tempHumSensor = I2C.I2C(busNumber=tempHumBus, deviceAddress=tempHumDevice)
         self.thermo1 = SPI.SPIDevice(bus=thermo1Bus, device=thermo1Device)
         self.thermo2 = SPI.SPIDevice(bus=thermo2Bus, device=thermo2Device)
 
