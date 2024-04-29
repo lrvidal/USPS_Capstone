@@ -190,7 +190,7 @@ class GUI:
         self.air_axs[0, 0].set_yticks([])
         data = dataProvider.getCurrentAirPressure()
         data = "%.2f" % data if type(data) is not str else data
-        self.air_axs[0, 0].text(0.5, 0.5, "%.2f" % dataProvider.getCurrentAirPressure() + " psi", fontsize=35, ha='center', color=airPressureColor)
+        self.air_axs[0, 0].text(0.5, 0.5, data + " psi", fontsize=35, ha='center', color=airPressureColor)
         self.air_canvas.draw()
     
     def updateAirTemperatureTrend(self):
@@ -208,7 +208,7 @@ class GUI:
         self.air_axs[2, 0].set_yticks([])
         data = dataProvider.getCurrentAirTemperature()
         data = "%.2f" % data if type(data) is not str else data
-        self.air_axs[2, 0].text(0.5, 0.5, "%.2f" % dataProvider.getCurrentAirTemperature() + " °F", fontsize=35, ha='center', color=airTempColor)
+        self.air_axs[2, 0].text(0.5, 0.5, data + " °F", fontsize=35, ha='center', color=airTempColor)
         self.air_canvas.draw()
 
     def updatePhaseTrends(self):
