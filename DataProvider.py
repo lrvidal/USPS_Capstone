@@ -106,7 +106,7 @@ class DataProvider:
 
         # Oil Section #
         oilOneRead = self.thermo1.read_data(length=4)
-        currentFirstOilTemperature = self.cToF(oilOneRead)
+        currentFirstOilTemperature = self.cToF(oilOneRead - 3.5)
         self._firstOilTemperatureTrend.append(currentFirstOilTemperature)
 
         oilTwoRead = self.thermo2.read_data(length=4)
