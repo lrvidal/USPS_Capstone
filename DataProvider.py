@@ -13,7 +13,7 @@ ROGOWSKY_PHASE_2_VOLTAGE_REGISTER = 1012
 ROGOWSKY_PHASE_3_VOLTAGE_REGISTER = 1014
 ROGOWSKY_PHASE_SEQUENCE_REGISTER = 220
 
-ERROR_MESSAGE = "Data\nNot Found"
+ERROR_MESSAGE = "Not Found"
 
 class DataProvider:
     _airPressureTrend = []
@@ -42,16 +42,16 @@ class DataProvider:
         self.thermo2 = SPI.SPIDevice(bus=thermo2Bus, device=thermo2Device)
 
 
-    OIL_ONE_ZERO_C_CAL = 0
-    OIL_ONE_HUNDRED_C_CAL = 100
+    OIL_ONE_ZERO_C_CAL = -0.3
+    OIL_ONE_HUNDRED_C_CAL = 116.416667
 
     OIL_TWO_ZERO_C_CAL = 0
-    OIL_TWO_HUNDRED_C_CAL = 100
+    OIL_TWO_HUNDRED_C_CAL = 117.61111
     def calibrateThermo(self, zeroC, hundredC, input):
         if input is None:
             return None
         
-        thermoSlope = (hundredC - zeroC) / 100.0
+        thermoSlope = (hundredC - zeroC) / 100
         thermoIntercept = zeroC
 
         calibratedReading = (input - thermoIntercept) / thermoSlope
