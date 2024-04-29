@@ -41,6 +41,25 @@ class DataProvider:
         self.thermo1 = SPI.SPIDevice(bus=thermo1Bus, device=thermo1Device)
         self.thermo2 = SPI.SPIDevice(bus=thermo2Bus, device=thermo2Device)
 
+
+    OIL_ONE_ZERO_C_CAL = 0
+    OIL_ONE_HUNDRED_C_CAL = 100
+
+    OIL_TWO_ZERO_C_CAL = 0
+    OIL_TWO_HUNDRED_C_CAL = 100
+    def calibrateThermo(zeroC, hundredC, input):
+        if input is None:
+            return None
+        
+        thermoSlope = (hundredC - zeroC) / 100.0
+        thermoIntercept = zeroC
+
+        calibratedReading = (input - thermoIntercept) / thermoSlope
+        return calibratedReading
+
+        
+
+
     def cToF(self, celsius):
         if celsius == None:
             return -999
@@ -105,11 +124,11 @@ class DataProvider:
         self._phaseCurrentTrend[2].append(currentPhaseCurrent3)
 
         # Oil Section #
-        oilOneRead = self.thermo1.read_data(length=4)
+        oilOneRead = self.calibrateThermo(self.OIL_ONE_ZERO_C_CAL, self.OIL_ONE_HUNDRED_C_CAL , self.thermo1.read_data(length=4))
         currentFirstOilTemperature = self.cToF(oilOneRead)
         self._firstOilTemperatureTrend.append(currentFirstOilTemperature)
 
-        oilTwoRead = self.thermo2.read_data(length=4)
+        oilTwoRead = self.calibrateThermo(self.OIL_TWO_ZERO_C_CAL, self.TWO_ONE_HUNDRED_C_CAL , self.thermo2.read_data(length=4))
         currentSecondOilTemperature = self.cToF(oilTwoRead)
         self._secondOilTemperatureTrend.append(currentSecondOilTemperature)
 
