@@ -110,7 +110,7 @@ class DataProvider:
         self._firstOilTemperatureTrend.append(currentFirstOilTemperature)
 
         oilTwoRead = self.thermo2.read_data(length=4)
-        currentSecondOilTemperature = self.cToF(oilTwoRead)
+        currentSecondOilTemperature = self.cToF(oilTwoRead - 3.5)
         self._secondOilTemperatureTrend.append(currentSecondOilTemperature)
 
     def updateDataCSV(self):
