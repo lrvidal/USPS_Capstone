@@ -1,15 +1,18 @@
 import minimalmodbus
 
 class ModBus:
-    def __init__(self, port, peripheral_address):
-        self.instrument = minimalmodbus.Instrument(port, peripheral_address)
-        self.instrument.serial.baudrate = 9600
-        self.instrument.serial.timeout = 0.1
+    def __init__(self, port, address) :
+    # Initialize Modbus Reader
+        self.instr = minimalmodbus.Instrument(port,address)
+        self.instr.serial.baudrate = 9600
+        self.instr.handle_local_echo = True
 
-    def readData(self, register_address):
-        try:
-            data = self.instrument.read_register(register_address, functioncode=3)
-            return data
-        except Exception as e:
-            print(f"Error reading data: {e}")
-            return None
+    def read_modbus_float(self, register):
+        for i in range(10):
+            try:
+                value = self.instr.read_float(register)
+                return round(value,4)
+            except:
+                value = None
+        return value
+

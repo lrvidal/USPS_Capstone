@@ -5,14 +5,13 @@ import csv
 import datetime
 import RPi.GPIO as GPIO
 
-ROGOWSKY_PHASE_1_CURRENT_REGISTER = 0x3E8
-ROGOWSKY_PHASE_2_CURRENT_REGISTER = 0x3EA
-ROGOWSKY_PHASE_3_CURRENT_REGISTER = 0x3EC
-ROGOWSKY_PHASE_1_VOLTAGE_REGISTER = 0x3F2
-ROGOWSKY_PHASE_2_VOLTAGE_REGISTER = 0x3F4
-ROGOWSKY_PHASE_3_VOLTAGE_REGISTER = 0x3F6
-ROGOWSKY_PHASE_POWER_REGISTER = 0x40A
-ROGOWSKY_PHASE_SEQUENCE_REGISTER = 0xDC
+ROGOWSKY_PHASE_1_CURRENT_REGISTER = 1000
+ROGOWSKY_PHASE_2_CURRENT_REGISTER = 1002
+ROGOWSKY_PHASE_3_CURRENT_REGISTER = 1004
+ROGOWSKY_PHASE_1_VOLTAGE_REGISTER = 1010
+ROGOWSKY_PHASE_2_VOLTAGE_REGISTER = 1012
+ROGOWSKY_PHASE_3_VOLTAGE_REGISTER = 1014
+ROGOWSKY_PHASE_SEQUENCE_REGISTER = 220
 
 class DataProvider:
     _airPressureTrend = []
@@ -34,12 +33,11 @@ class DataProvider:
              thermo2Bus, thermo2Device
              ):
         
-        self.rogowskyCoil = ModBus.ModBus(port=rogowskyPort, peripheral_address=rogowskyAdress)
+        self.rogowskyCoil = ModBus.ModBus(port=rogowskyPort, address=rogowskyAdress)
         #self.currentLoop = I2C.I2C(busNumber=loopBus, deviceAddress=loopDevice)
         #self.tempHumSensor = I2C.I2C(busNumber=tempHumBus, deviceAddress=tempHumDevice) FIXME: uncomment
         self.thermo1 = SPI.SPIDevice(bus=thermo1Bus, device=thermo1Device)
         self.thermo2 = SPI.SPIDevice(bus=thermo2Bus, device=thermo2Device)
-    #     self.motorThermo = SPI(bus=thermo3Bus, device=thermo3Device)
 
     def cToF(self, celsius):
         if celsius == None:
@@ -80,8 +78,7 @@ class DataProvider:
 
         # Electrical Section #
 
-
-        currentPhaseVoltage1 = self.rogowskyCoil.readData(ROGOWSKY_PHASE_1_VOLTAGE_REGISTER)
+        currentPhaseVoltage1 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_1_VOLTAGE_REGISTER)
         print("PHASE 1 VOLTAGE ", currentPhaseVoltage1)
         currentPhaseCurrent1 = self._phaseCurrentTrend[0][-1] + 1 if len(self._phaseCurrentTrend[0]) != 0 else 0
         currentPhaseVoltage2 = self._phaseVoltageTrend[1][-1] + 2 if len(self._phaseVoltageTrend[1]) != 0 else 0
