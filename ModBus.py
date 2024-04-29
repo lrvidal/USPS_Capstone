@@ -12,7 +12,8 @@ class ModBus:
             try:
                 value = self.instr.read_float(register)
                 return round(value,4)
-            except:
+            except Exception as e:
                 value = None
+                print(e)
         return value
 
