@@ -128,7 +128,7 @@ class DataProvider:
         currentFirstOilTemperature = self.cToF(oilOneRead)
         self._firstOilTemperatureTrend.append(currentFirstOilTemperature)
 
-        oilTwoRead = self.calibrateThermo(self.OIL_TWO_ZERO_C_CAL, self.TWO_ONE_HUNDRED_C_CAL , self.thermo2.read_data(length=4))
+        oilTwoRead = self.calibrateThermo(self.OIL_TWO_ZERO_C_CAL, self.OIL_TWO_HUNDRED_C_CAL , self.thermo2.read_data(length=4))
         currentSecondOilTemperature = self.cToF(oilTwoRead)
         self._secondOilTemperatureTrend.append(currentSecondOilTemperature)
 
