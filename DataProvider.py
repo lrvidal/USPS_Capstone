@@ -155,7 +155,7 @@ class DataProvider:
         return self._phaseVoltageTrend, self._phaseCurrentTrend
     
     def getPhaseStatus(self):
-        phaseStatus = self.rogowskyCoil.readData(ROGOWSKY_PHASE_SEQUENCE_REGISTER)
+        phaseStatus = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_SEQUENCE_REGISTER)
         return phaseStatus
     
     def getWaterLevelStatus(self):
