@@ -70,12 +70,17 @@ class DataProvider:
         self._measurementsTime.append("{0}:{1}".format(current_time.hour, min))
 
         # Air Section #
-        currentPressure = self.currentLoop.read_pressure() or ERROR_MESSAGE
-        self._airPressureTrend.append(currentPressure)
+        try:
+            currentPressure = self.currentLoop.read_pressure()
+            self._airPressureTrend.append(currentPressure)
+        except:
+            self._airPressureTrend.append(ERROR_MESSAGE)
 
-        currentTemperature, currentHumidity = self.tempHumSensor.read_sht30()
-        currentTemperature = currentTemperature or -999
-        currentHumidity = currentHumidity or -999
+        try :
+            currentTemperature, currentHumidity = self.tempHumSensor.read_sht30()
+        except:
+            currentTemperature = -999
+            currentHumidity = -999
         
         self._airHumidityTrend.append(currentHumidity)
         self._airTemperatureTrend.append(self.cToF(currentTemperature))
