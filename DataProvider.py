@@ -78,13 +78,15 @@ class DataProvider:
 
         # Electrical Section #
 
-        currentPhaseVoltage1 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_1_VOLTAGE_REGISTER)
+        currentPhaseVoltage1 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_1_VOLTAGE_REGISTER) or "error"
+        currentPhaseVoltage2 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_2_VOLTAGE_REGISTER) or "error"
+        currentPhaseVoltage3 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_3_VOLTAGE_REGISTER) or "error"
+
+        currentPhaseCurrent1 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_1_CURRENT_REGISTER) or "error"
+        currentPhaseCurrent2 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_2_CURRENT_REGISTER) or "error"
+        currentPhaseCurrent3 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_3_CURRENT_REGISTER) or "error"
+
         print("PHASE 1 VOLTAGE ", currentPhaseVoltage1)
-        currentPhaseCurrent1 = self._phaseCurrentTrend[0][-1] + 1 if len(self._phaseCurrentTrend[0]) != 0 else 0
-        currentPhaseVoltage2 = self._phaseVoltageTrend[1][-1] + 2 if len(self._phaseVoltageTrend[1]) != 0 else 0
-        currentPhaseCurrent2 = self._phaseCurrentTrend[1][-1] + 2 if len(self._phaseCurrentTrend[1]) != 0 else 0
-        currentPhaseVoltage3 = self._phaseVoltageTrend[2][-1] + 3 if len(self._phaseVoltageTrend[2]) != 0 else 0
-        currentPhaseCurrent3 = self._phaseCurrentTrend[2][-1] + 3 if len(self._phaseCurrentTrend[2]) != 0 else 0
 
         self._phaseVoltageTrend[0].append(currentPhaseVoltage1)
         self._phaseCurrentTrend[0].append(currentPhaseCurrent1)
