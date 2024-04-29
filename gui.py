@@ -214,19 +214,21 @@ class GUI:
         phaseVoltage, phaseCurrent = dataProvider.getPhaseTrends()
 
         phaseStatus = dataProvider.getPhaseStatus()
+        phaseStatus = -1 if phaseStatus is None else phaseStatus
         phaseStatusColor = "black" if phaseStatus == 0 else "red"
         phaseStatusMessages = {
+            -1: "Error Reading Data",
             0: "All Clear",
             1: "Voltage Sequence wrong,\nCurrent Sequence normal",
             2: "Voltage Sequence normal,\nCurrent Sequence wrong",
-            3: "Voltage Sequence wrong,\nCurrent Sequence wrong",
+            3: "Voltage Sequence wrong,\nCurrent Sequence wrong"
         }
 
         self.phase_axs[0, 0].cla()
         self.phase_axs[0, 0].set_title("Current Status")
         self.phase_axs[0, 0].set_xticks([])
         self.phase_axs[0, 0].set_yticks([])
-        self.phase_axs[0, 0].text(0.5, 0.5, phaseStatusMessages[0], fontsize=20, ha='center', color=phaseStatusColor) #FIXME
+        self.phase_axs[0, 0].text(0.5, 0.5, phaseStatusMessages[phaseStatus], fontsize=20, ha='center', color=phaseStatusColor) #FIXME
         self.phase_canvas.draw()
 
         for i in range(3):
