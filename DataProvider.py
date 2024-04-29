@@ -87,13 +87,13 @@ class DataProvider:
 
         # Electrical Section #
 
-        currentPhaseVoltage1 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_1_VOLTAGE_REGISTER) or ERROR_MESSAGE
-        currentPhaseVoltage2 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_2_VOLTAGE_REGISTER) or ERROR_MESSAGE
-        currentPhaseVoltage3 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_3_VOLTAGE_REGISTER) or ERROR_MESSAGE
+        currentPhaseVoltage1 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_1_VOLTAGE_REGISTER) or -999
+        currentPhaseVoltage2 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_2_VOLTAGE_REGISTER) or -999
+        currentPhaseVoltage3 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_3_VOLTAGE_REGISTER) or -999
 
-        currentPhaseCurrent1 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_1_CURRENT_REGISTER) or ERROR_MESSAGE
-        currentPhaseCurrent2 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_2_CURRENT_REGISTER) or ERROR_MESSAGE
-        currentPhaseCurrent3 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_3_CURRENT_REGISTER) or ERROR_MESSAGE
+        currentPhaseCurrent1 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_1_CURRENT_REGISTER) or -999
+        currentPhaseCurrent2 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_2_CURRENT_REGISTER) or -999
+        currentPhaseCurrent3 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_3_CURRENT_REGISTER) or -999
 
         print("PHASE 1 VOLTAGE ", currentPhaseVoltage1)
 
