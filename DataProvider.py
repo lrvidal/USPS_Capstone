@@ -68,7 +68,7 @@ class DataProvider:
         self._measurementsTime.append("{0}:{1}".format(current_time.hour, min))
 
         # Air Section #
-        currentPressure = 1 #self.currentLoop.read_pressure()
+        currentPressure = self.currentLoop.read_pressure() or "error"
         self._airPressureTrend.append(currentPressure)
 
         currentTemperature, currentHumidity = self.tempHumSensor.read_sht30()
