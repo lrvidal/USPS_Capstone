@@ -47,7 +47,7 @@ class DataProvider:
 
     OIL_TWO_ZERO_C_CAL = 0
     OIL_TWO_HUNDRED_C_CAL = 100
-    def calibrateThermo(zeroC, hundredC, input):
+    def calibrateThermo(self, zeroC, hundredC, input):
         if input is None:
             return None
         
