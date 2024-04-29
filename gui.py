@@ -16,7 +16,7 @@ LOOP_DEVICE_ADDRESS = 0x48
 ### Humidity Sensor I2C ###
 AIR_TEMP_HUMIDITY_DEVICE_ADDRESS = 0x44
 ### Rogowsky Coil ModBus ###
-ROGOWSKY_PORT = '/dev/ttyS0'
+ROGOWSKY_PORT = '/dev/serial0'
 ROGOWSKY_PERIPHERAL_ADDRESS = 1
 
 ### SPI BUS NUMBER ###
