@@ -13,7 +13,7 @@ ROGOWSKY_PHASE_2_VOLTAGE_REGISTER = 1012
 ROGOWSKY_PHASE_3_VOLTAGE_REGISTER = 1014
 ROGOWSKY_PHASE_SEQUENCE_REGISTER = 220
 
-ERROR_MESSAGE = "Sensor Response Failed"
+ERROR_MESSAGE = "error\nreading\ndata"
 
 class DataProvider:
     _airPressureTrend = []
