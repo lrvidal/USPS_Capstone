@@ -5,7 +5,7 @@ class ModBus:
     # Initialize Modbus Reader
         self.instr = minimalmodbus.Instrument(port,address)
         self.instr.serial.baudrate = 9600
-        self.instr.handle_local_echo = True
+        self.instr.handle_local_echo = False
 
     def read_modbus_float(self, register):
         for i in range(10):
