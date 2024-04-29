@@ -188,7 +188,7 @@ class GUI:
         self.air_axs[0, 0].set_title("Current Air Pressure")
         self.air_axs[0, 0].set_xticks([])
         self.air_axs[0, 0].set_yticks([])
-        self.air_axs[0, 0].text(0.5, 0.5, "%.2f" % dataProvider.getCurrentAirPressure() + " psi", fontsize=35, ha='center', color=airPressureColor)
+        self.air_axs[0, 0].text(0.5, 0.5, "%.2f" % dataProvider.getCurrentAirPressure() + " psi", fontsize=35, ha='center')
         self.air_canvas.draw()
     
     def updateAirTemperatureTrend(self):
