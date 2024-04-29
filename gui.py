@@ -287,7 +287,7 @@ class GUI:
         self.oil_canvas.draw()
 ## CONSTANTS ZONE ##
 # these constants are used to determine if a measurement is concerning, making the text red on the GUI 
-OIL_TEMP_CONCERNING = 300
+OIL_TEMP_CONCERNING = 198.46
 AIR_PRESSURE_CONCERNING = 132
 AIR_HUMIDITY_CONCERNING = 50
 AIR_TEMP_CONCERNING = 212
@@ -298,7 +298,10 @@ CONCERNING_PARAMS = {
     "Air Temperature": AIR_TEMP_CONCERNING
 }
 def isMeasurementConcerning(type, value):
-    return 1 if type(value) is not str else float(value) > CONCERNING_PARAMS[type]
+    try:
+        float(value) > CONCERNING_PARAMS[type]
+    except:
+        return 1
 
 window = tk.Tk()
 window.title("DUS Monitoring System")
