@@ -13,6 +13,8 @@ ROGOWSKY_PHASE_2_VOLTAGE_REGISTER = 1012
 ROGOWSKY_PHASE_3_VOLTAGE_REGISTER = 1014
 ROGOWSKY_PHASE_SEQUENCE_REGISTER = 220
 
+ERROR_MESSAGE = "Sensor Response Failed"
+
 class DataProvider:
     _airPressureTrend = []
     _airHumidityTrend = []
@@ -68,7 +70,7 @@ class DataProvider:
         self._measurementsTime.append("{0}:{1}".format(current_time.hour, min))
 
         # Air Section #
-        currentPressure = self.currentLoop.read_pressure() or "error"
+        currentPressure = self.currentLoop.read_pressure() or ERROR_MESSAGE
         self._airPressureTrend.append(currentPressure)
 
         currentTemperature, currentHumidity = self.tempHumSensor.read_sht30()
@@ -80,13 +82,13 @@ class DataProvider:
 
         # Electrical Section #
 
-        currentPhaseVoltage1 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_1_VOLTAGE_REGISTER) or "error"
-        currentPhaseVoltage2 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_2_VOLTAGE_REGISTER) or "error"
-        currentPhaseVoltage3 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_3_VOLTAGE_REGISTER) or "error"
+        currentPhaseVoltage1 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_1_VOLTAGE_REGISTER) or ERROR_MESSAGE
+        currentPhaseVoltage2 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_2_VOLTAGE_REGISTER) or ERROR_MESSAGE
+        currentPhaseVoltage3 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_3_VOLTAGE_REGISTER) or ERROR_MESSAGE
 
-        currentPhaseCurrent1 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_1_CURRENT_REGISTER) or "error"
-        currentPhaseCurrent2 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_2_CURRENT_REGISTER) or "error"
-        currentPhaseCurrent3 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_3_CURRENT_REGISTER) or "error"
+        currentPhaseCurrent1 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_1_CURRENT_REGISTER) or ERROR_MESSAGE
+        currentPhaseCurrent2 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_2_CURRENT_REGISTER) or ERROR_MESSAGE
+        currentPhaseCurrent3 = self.rogowskyCoil.read_modbus_float(ROGOWSKY_PHASE_3_CURRENT_REGISTER) or ERROR_MESSAGE
 
         print("PHASE 1 VOLTAGE ", currentPhaseVoltage1)
 
